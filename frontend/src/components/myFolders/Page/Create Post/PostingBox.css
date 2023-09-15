@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+
+.post-box {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #eedede;
+  border-radius: 4px;
+  background-color: rgb(224, 247, 239);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+.post-box h2 {
+  text-align: center;
+  font-size: 35px;
+  margin-top: 10px;
+  font-family: sans-serif;
+  font-weight: 600;
+  margin-bottom: 30px;
+  
+}
+
+.post-box form {
+  margin-top: 20px;
+}
+
+.post-row {
+  width: 85%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid white;
+  border-radius: 4px;
+  resize: vertical;
+  margin-left: 18px;
+
+}
+.drop{
+  width: 89%;
+  padding: 10px;
+  margin-bottom: 20px;
+  /* border: 1px solid black; */
+  border-radius: 4px;
+  resize: vertical;
+  margin-left: 18px;}
+
+.post-input textarea {
+  height: 100px;
+}
+
+.hide {
+  display: none;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group i {
+  margin-right: 10px;
+}
+.post-submit-button {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  padding: 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2573f8;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 20%;
+  margin-bottom: 20px;
+  }
+
+.input-group.upload {
+  width: 30%;
+  display: inline-block;
+  margin-left: 8px;
+  margin-top: 20px;
+  /* border: 1px solid black; */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.text{
+  min-height: 10rem;
+}
+
+.svg-inline--fa {
+  height: 50px !important;
+}
+
+.selected-files {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  width: 80%;
+  margin-left: 30px;
+}
+.selected-file-name {
+  display: block;.selected-files-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+  }
+  
+  .selected-file-name {
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+  }
+  
+  margin-top: 20px;
+  /* margin-bottom: px; */
+  margin-left: 30px;
+  padding: 10px;
+  font-size: 12px;
+  color: #777;
+  width: 80%
+}
+
+
+.fa-icons {
+  color: lightskyblue /* Update the color as desired */
+}
+.fa-icon{
+  color: rgb(223, 75, 131);
+}
+.fa-con{
+  color: #4686f3;
+}
+@media (max-width: 500px) {
+  .post-box {
+    margin: 10px;
+    border: none;
+    box-shadow: none;
+  }
+}
+.post-input {
+  width: 85%;
+  padding: 10px;
+  margin-bottom: 20px;
+  /* border: 1px solid black; */
+  border-radius: 4px;
+  resize: vertical;
+  margin-left: 18px;
+
+}
+/* .drop{
+  width: 89%;
+} */
