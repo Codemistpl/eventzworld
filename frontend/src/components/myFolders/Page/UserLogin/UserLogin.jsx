@@ -5,18 +5,11 @@ import Main from '../../Main'
 import './UserLogin.css'
 import Facebook from '../Facbook/facebook'
 import AdminLogin from "../AdminLogin/AdminLogin";
-// import {logo192} from "../im/logo192"
 import GuestLogin from "./GuestLogin"
 import { Api_url } from "../../../../constant";
 const LoginForm = () => {
 
   const [showAdminLogin, setShowAdminLogin] = useState(false);
-
-
-  //   setMarker,
-
-  //   setPlayers,
-  // }) => {
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -43,24 +36,12 @@ const LoginForm = () => {
     };
     console.log("Form Data:", formData);
 
-    // if (userName === "guest" && password === "guest123") {
-    //   // Redirect to the home page
-    //   navigate('/ViewPage');
-    // } else {
-    //   // Handle incorrect login credentials
-    //   console.log("Invalid username or password");
-    // }
+ 
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-
-  // const handleGuestLogin = () => {
-  //   // Set guest username and password
-  //   setUserName("");
-  //   setPassword("");
-  // };
 
   const handleSignup = () => {
     setShowSignup(true);
@@ -124,58 +105,15 @@ const LoginForm = () => {
 
     } catch (error) {
       console.error("Error occurred during login:", error.message);
-      window.alert("Unauthorized")
-      // Handle the error and display appropriate message to the user
+      window.alert("Invalid Credential")
+      
     }
-  };
-
-  // const guestlogin = async () => {
-  //   setUserName("");
-  //  setPassword("");
-  //   try {
-  //     const res = await fetch('http://localhost:4113/create_post/guestlogin', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //     });
-  
-  //     if (!res.ok) {
-  //       throw new Error('Guest login failed');
-  //     }
-  
-  //     const data = await res.json();
-  //     // const guestToken = data.token;
-  
-      
-  //     // localStorage.setItem('token', guestToken);
-  
-  //     localStorage.setItem('isLoggedIn', 'true');
-  //     window.location.href = "/ViewPage"
-  //   } catch (error) {
-  //     console.error('Error during guest login:', error);
-      
-  //   }
-  // };
-  
-
-
-  return (
+  };return (
     <div className="container">
       <div className="login-container">
         <h1>Login Page</h1>
         <form onSubmit={handleSubmit}>
-
-          <div className="admin-login-option">
-            {/* <label>
-              <input
-                type="checkbox"
-                checked={showAdminLogin}
-                onChange={handleAdminLogin}
-              />
-              Show Admin Login  
-            </label> */}
-          </div>
           <div>
-            {/* <img src={logo192.png} alt="email" className="email" /> */}
             <input
               type="text"
               placeholder="Username"
@@ -193,15 +131,14 @@ const LoginForm = () => {
               onChange={handlePasswordChange}
             />
           </div>
-          <div className="btn" style={{
+          
+            <div  style={{
             margintop: " 10px",
-            cursor: "pointer"
-          }}>
-            <div className="login-button" style={{}}>
-              <button onClick={Logindata} style={{ marginBottom: "15px" }} type="submit">Login</button>
+            cursor: "pointer"}}>
+              <button className="login-button" onClick={Logindata} style={{ marginBottom: "15px" }} type="submit">Login</button>
               {/* <button type="button" onClick={handleGuestLogin}>Guest Login</button> */}
               {/* <button onClick={guestlogin}>Guest Login</button> */}
-               <GuestLogin/>
+               <  GuestLogin/>
               <div >
                 <div>
                   <Main />
@@ -217,7 +154,7 @@ const LoginForm = () => {
                 </p>
               </div>
             </div>
-          </div>
+         
         </form>
       </div>
     </div>

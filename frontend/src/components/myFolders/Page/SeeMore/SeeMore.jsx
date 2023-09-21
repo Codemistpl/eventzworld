@@ -218,7 +218,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaInstagram, FaFacebook, FaWhatsapp, FaTwitter } from 'react-icons/fa';
+import { FacebookShareButton, WhatsappShareButton, TwitterShareButton } from "react-share";
+import {FacebookIcon, WhatsappIcon, TwitterIcon} from "react-share";
 
 import './SeeMore.css';
 import { Api_url } from '../../../../constant';
@@ -272,30 +273,41 @@ const SeeMore = () => {
     setModalOpen(false);
   };
    
- const shareOnSocialMedia = (platform) => {
-  let shareUrl = '';
+//  const shareOnSocialMedia = (platform) => {
+//   let shareUrl = '';
 
-  switch (platform) {
-    case 'instagram':
-      shareUrl = `https://www.instagram.com/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-      break;
-    case 'facebook':
-      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-      break;
-    case 'whatsapp':
-      shareUrl = `https://wa.me/?text=${encodeURIComponent(window.location.href)}`;
-      break;
-    case 'twitter':
-      shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`;
-      break;
-    default:
-      break;
-  }
+//   switch (platform) {
+//     case 'instagram':
+//       window.open('https://www.instagram.com', '_blank');
+//       break;
+//     case 'facebook':
+//       shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+//       break;
+//     case 'whatsapp':
+//       shareUrl = `https://wa.me/?text=${encodeURIComponent(window.location.href)}`;
+//       break;
+//     case 'twitter':
+//       shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`;
+//       break;
+//     default:
+//       break;
+//   }
+  // const shareOnInstagram = () => {
+  //   const caption = encodeURIComponent("Check out this awesome post!");
+  
+  //   // Open Instagram website with pre-filled caption
+  //   window.open(`https://www.instagram.com/create/story/?text=${caption}`, '_blank');
+  // };
+  
+  
+  
+  
+  
 
-  if (shareUrl) {
-    window.open(shareUrl, '_blank');
-  }
-};
+//   if (shareUrl) {
+//     window.open(shareUrl, '_blank');
+//   }
+// };
  
 
   
@@ -341,11 +353,34 @@ const SeeMore = () => {
               Your browser does not support the video element.
             </video>
           )}
-          <div className="social-media-icons">
-       <FaInstagram style={{color:"#feda75"}} onClick={() => shareOnSocialMedia('instagram')} />
+          {/* <div className="social-media-icons">
+       <FaInstagram className="insta" onClick={() => shareOnSocialMedia('instagram')} />
        <FaFacebook style={{color:"blue"}}  onClick={() => shareOnSocialMedia('facebook')} />
       <FaWhatsapp style={{color:"green"}}  onClick={() => shareOnSocialMedia('whatsapp')} />
        <FaTwitter style={{color:"blue"}}  onClick={() => shareOnSocialMedia('twitter')} />
+</div> */}
+
+<div>
+  <FacebookShareButton url="https://youtu.be/0XSujRgVXI"
+    quote={"Hey"}
+    hashtag="#React"
+  >
+    <FacebookIcon logoFillColor="white" round={true}>
+
+    </FacebookIcon>
+  </FacebookShareButton>
+  <WhatsappShareButton
+  title='Sharing Content'
+  url="http://localhost:3000/SeeMore/"
+  >
+    <WhatsappIcon logoFillColor="white" round={true}></WhatsappIcon>
+  </WhatsappShareButton>
+  <TwitterShareButton
+  title='Sharing Content'
+  url="http://localhost:3000/SeeMore/"
+>
+  <TwitterIcon logoFillColor="white" round={true} />
+</TwitterShareButton>
 </div>
 
     </div>

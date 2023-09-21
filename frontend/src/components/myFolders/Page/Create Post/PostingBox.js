@@ -81,35 +81,6 @@ const PostBox = () => {
   };
 
 
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target.value;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
-
-
-
-  // const handleEventDateChange = (e) => {
-  //   setEventDate(e.target.value);
-  //   const { name, value } = e.target.value;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
-
-
-  // const handleEventTimeChange = (e) => {
-  //   setEventTime(e.target.value);
-  //   const { name, value } = e.target.value;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
-
   const handleEventDateChange = (e) => {
     const newDate = e.target.value;
     setEventDate(newDate);
@@ -118,7 +89,7 @@ const PostBox = () => {
       eventDate: newDate,
     }));
   };
-  
+
   const handleEventTimeChange = (e) => {
     const newTime = e.target.value;
     setEventTime(newTime);
@@ -127,7 +98,7 @@ const PostBox = () => {
       eventTime: newTime,
     }));
   };
-  
+
 
   const CreatePost = async () => {
     console.log("Form submitted", formData);
@@ -192,185 +163,153 @@ const PostBox = () => {
 
   return (
     <div className='background'>
-    <div className="post-box">
-      <div>
-        <h2>Create a Post</h2>
-        <form onSubmit={handleSubmit}  method="post" enctype="multipart/form-data">
-
-          <input
-            type="text"
-            placeholder="Event Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="post-row"
-          />
-          <Search
-            value={formData.addres}
-            onLocationChange={handleLocationChange}
-
-          />
-
-
-
-          <select
-
-
-            name="category"
-            className="post-row"
-            value={formData.category}
-            onChange={handleChange}
-
-          >
-            <option value="">Select Event Category</option>
-            <option value="sport">Sport</option>
-            <option value="dance">Dance</option>
-            <option value="Music">Music</option>
-            <option value="art">Art</option>
-            {/* <option value="football"></option> */}
-          </select>
-          <input
-            type="text"
-            placeholder="Event Venue"
-            name="eventVenue"
-            value={formData.eventVenue}
-            onChange={handleChange}
-            style={{ marginBottom: "18px" }}
-            className="post-row"
-          />
-          <input
-            type="date"
-            placeholder="Event Date"
-            name='eventDate'
-            value={eventDate}
-            onChange={handleEventDateChange}
-            className="post-row"
-          />
-          <input
-            type="time"
-            placeholder="Event Time"
-            value={eventTime}
-            onChange={handleEventTimeChange}
-            className="post-row"
-          />
-
-          <div className="input-group upload">
-            <label htmlFor="image-upload">
-              <FontAwesomeIcon icon={faImage} className="fa-icons" />
-            </label>
-            {/* <input
-              id="image-upload"
-              type="file"
-              accept="image/*"
-              // value={formData.image}
-              onChange={(e) => {
-                handleImageUpload(e);
-                handleFileSelect("image", e.target.files[0].name); // Update selected image file name
-              }}
-              name='image'
-              className="post-row hide"
-              
-            />           */}
+      <div className="post-box">
+        <div>
+          <h2>Create a Post</h2>
+          <form onSubmit={handleSubmit} method="post" enctype="multipart/form-data">
 
             <input
-              id="image-upload"
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                handleImageUpload(e);
-                updateSelectedFile('image', e.target.files[0].name);
-              }}
-              name="image"
-              className="post-row hide"
+              type="text"
+              placeholder="Event Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="post-row"
             />
-            <div className="selected-files-container">
-    <span className="selected-file-name">{selectedFiles.image}</span>
-  </div>
+            <Search
+              value={formData.addres}
+              onLocationChange={handleLocationChange}
 
-          </div>
+            />
 
-          <div className="input-group upload">
-            <label htmlFor="audio-upload">
-              <FontAwesomeIcon icon={faMusic} className="fa-icon" />
-            </label>
-            {/* <input
-              id="audio-upload"
-              type="file"
-              accept="audio/*"
-              name="audio"
-              // onChange={handleInputChange}
-              className="post-row hide"
-              // value={formData.audio}
-              onChange={handleAudioUpload}
-            /> */}
+
+
+            <select
+
+
+              name="category"
+              className="post-row"
+              value={formData.category}
+              onChange={handleChange}
+
+            >
+              <option value="">Select Event Category</option>
+              <option value="sport">Sport</option>
+              <option value="dance">Dance</option>
+              <option value="Music">Music</option>
+              <option value="art">Art</option>
+              {/* <option value="football"></option> */}
+            </select>
             <input
-              id="audio-upload"
-              type="file"
-              accept="audio/*"
-              onChange={(e) => {
-                handleAudioUpload(e);
-                updateSelectedFile('audio', e.target.files[0].name);
-              }}
-              name="audio"
-              className="post-row hide"
+              type="text"
+              placeholder="Event Venue"
+              name="eventVenue"
+              value={formData.eventVenue}
+              onChange={handleChange}
+              style={{ marginBottom: "18px" }}
+              className="post-row"
             />
-            <div className="selected-files-container">
-    <span className="selected-file-name">{selectedFiles.audio}</span>
-  </div>
-          </div>
-
-          <div className="input-group upload">
-            <label htmlFor="video-upload">
-              <FontAwesomeIcon icon={faVideo} className="fa-con" />
-            </label>
-            {/* <input
-              id="video-upload"
-              type="file"
-              accept="video/*"
-              name="video"
-              // onChange={handleInputChange}
-              className="post-row hide"
-              multiple
-              // value={formData.video}
-              onChange={handleVideoUpload}
-            /> */}
             <input
-              id="video-upload"
-              type="file"
-              accept="video/*"
-              onChange={(e) => {
-                handleVideoUpload(e);
-                updateSelectedFile('video', e.target.files[0].name);
-              }}
-              name="video"
-              className="post-row hide"
-              multiple
+              type="date"
+              placeholder="Event Date"
+              name='eventDate'
+              value={eventDate}
+              onChange={handleEventDateChange}
+              className="post-row"
             />
-             <div className="selected-files-container">
-    <span className="selected-file-name">{selectedFiles.video}</span>
-  </div>
-       </div>
+            <input
+              type="time"
+              placeholder="Event Time"
+              value={eventTime}
+              onChange={handleEventTimeChange}
+              className="post-row"
+            />
+
+            <div className="input-group upload">
+              <label htmlFor="image-upload">
+                <FontAwesomeIcon icon={faImage} className="fa-icons" />
+              </label>
+
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  handleImageUpload(e);
+                  updateSelectedFile('image', e.target.files[0].name);
+                }}
+                name="image"
+                className="post-row hide"
+              />
+              <div className="selected-files-container">
+                <span className="selected-file-name">{selectedFiles.image}</span>
+              </div>
+
+            </div>
+
+            <div className="input-group upload">
+              <label htmlFor="audio-upload">
+                <FontAwesomeIcon icon={faMusic} className="fa-icon" />
+              </label>
+
+              <input
+                id="audio-upload"
+                type="file"
+                accept="audio/*"
+                onChange={(e) => {
+                  handleAudioUpload(e);
+                  updateSelectedFile('audio', e.target.files[0].name);
+                }}
+                name="audio"
+                className="post-row hide"
+              />
+              <div className="selected-files-container">
+                <span className="selected-file-name">{selectedFiles.audio}</span>
+              </div>
+            </div>
+
+            <div className="input-group upload">
+              <label htmlFor="video-upload">
+                <FontAwesomeIcon icon={faVideo} className="fa-con" />
+              </label>
+
+              <input
+                id="video-upload"
+                type="file"
+                accept="video/*"
+                onChange={(e) => {
+                  handleVideoUpload(e);
+                  updateSelectedFile('video', e.target.files[0].name);
+                }}
+                name="video"
+                className="post-row hide"
+                multiple
+              />
+              <div className="selected-files-container">
+                <span className="selected-file-name">{selectedFiles.video}</span>
+              </div>
+            </div>
 
 
 
-          <textarea
-            placeholder="Enter your text here"
-            name="text"
-            value={formData.text}
-            onChange={handleChange}
-            className="post-row text"
-          ></textarea>
+            <textarea
+              placeholder="Enter your text here"
+              name="text"
+              value={formData.text}
+              onChange={handleChange}
+              className="post-row text"
+            ></textarea>
 
-          <button type="submit" className="post-submit-button">
-            Post
-          </button>
-        </form>
+            <button type="submit" className="post-submit-button">
+              Post
+            </button>
+          </form>
+
+
+        </div>
 
 
       </div>
-
-
-    </div>
     </div>
   );
 };

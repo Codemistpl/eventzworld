@@ -22,14 +22,14 @@ const Main = () => {
 
   return (
     <>
-    <div style={{marginLeft:"20%", marginTop:"10px", marginBottom:"10px" , backgroundcolor:"#df4930", color:"white"}}>
+    <div style={{justifyContent:"center", marginLeft:"21%", marginTop:"10px", marginBottom:"17px" , backgroundcolor:"#df4930", color:"white"}}>
      
               <GoogleLogin 
               clientId="930455171490-65or5r8589s8fes6gjf1u0es9ogdsbo6.apps.googleusercontent.com"
               // clientId="148618350247-ub8i9r8hniknbearhb69shomlfic5ig5.apps.googleusercontent.com"
             onSuccess={credentialResponse => {
             localStorage.setItem('isLoggedIn', 'true');
-            window.location.href = "/"
+            window.location.href = "/Viewpage"
             console.log(credentialResponse);
           }}
           onError={() => {

@@ -47,7 +47,7 @@ const LoginForm = () => {
 
   return (
     
-    <button type="button" onClick={handleGuestLogin}>
+    <button className="login-button" type="button" onClick={handleGuestLogin}>
       Guest Login
     </button>
     

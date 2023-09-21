@@ -57,7 +57,7 @@ function Facebook({ onLogin }) {
 
 
   return (
-    <div style={{ justifyContent: "center" }}>
+    <div style={{justifycontent:"center", marginTop:"10px", marginBottom:"17px" , backgroundcolor:"blue", color:"white"}}>
       <FacebookLogin
         // appId="537985784317073"
         // appId="257840317177709"

@@ -106,7 +106,8 @@ function Navbar() {
                 {authenticated && (
                   <button
                     className=""
-                    style={{width:"80px" , fontsize: "50px", height: "55px",
+                    style={{width:"80px" , fontsize: "50px", height: "55px", backgroundColor:"blue",
+                    color:"white",
                     paddingtop: "7px"}}
                     onClick={() => {
                       setAuthenticated(false);

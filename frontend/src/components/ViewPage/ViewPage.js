@@ -346,7 +346,7 @@ const ViewPage = () => {
           </div>
         ) : (
           <div>
-            <h2 style={{ color: "white" }}>No Events</h2>
+            <h2 style={{ color: "white", textAlign :'center' }}>No Events</h2>
           </div>
         )}
       </div>

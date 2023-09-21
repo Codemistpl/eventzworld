@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 import Main from "../Main";
@@ -11,74 +11,84 @@ const RegistrationForm = () => {
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [registrationStatus, setRegistrationStatus] = useState(null);
+  const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [location, setLocation] = useState("");
   const navigate = useNavigate();
 
   const handleLocationChange = (place) => {
     const lat = place.geometry.location.lat();
-    const lng = place.geometry.location.lng();}
+    const lng = place.geometry.location.lng();
+  }
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  
+    if (
+      name === "" ||
+      email === "" ||
+      gender === "" ||
+      password.length < 8 ||
+      location === "" ||
+      password !== confirmPassword
+    ) {
+      setRegistrationStatus("error");
+      setPasswordMatchError(true);
+      return;
+    }
+
     const formData = {
       name: "",
-    address: "",
-    phone: "",
-    role: "",
-    gender: "",
-    sport: "",
-    email: "",
-    lat: "",
-    lng: "",
+      address: "",
+      phone: "",
+      role: "",
+      gender: "",
+      sport: "",
+      email: "",
+      lat: "",
+      lng: "",
     };
     console.log("Form Data:", formData);
-
-    
-
-    // Perform registration logic with form data
-    // You can add code to handle storing the registration details
-
-    // After successful registration, redirect to login page
-   
   };
 
-  
-  // useEffect(() => {
-  //   getregisterPlayers();
-  //   let a;
-  //   let current = [];
-  //   current.push();
-  // }, []);
-
-  // const [map, setMap] = useState(null);
 
   const register = async (event) => {
     event.preventDefault();
-    // console.log("Form submitted", formData);
-
-    if (name === "" || email === "" || password === "" || confirmPassword === "" || location === "") {
-      alert("Please fill in all fields");
+  
+    // Validate phone number
+    const isValidPhoneNumber = /^[0-9]{10}$/g.test(email);
+    if (!isValidPhoneNumber) {
+      setRegistrationStatus("error");
+      setPasswordMatchError(true);
       return;
     }
   
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-
     const res = await fetch(`${Api_url}/create_post/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email , password , name }),
+      body: JSON.stringify({ email, password, name, location }),
     });
     console.log(res);
-    navigate("/login");
+    if (res.ok) {
+      setRegistrationStatus("success");
+      navigate("/login");
+    } else {
+      setRegistrationStatus("error");
+    }
   };
 
   return (
     <div className="box">
       <div className="registration-container">
         <h1>Create Account</h1>
+        {registrationStatus === "success" && (
+          <div className="success-message">Registration successful!</div>
+        )}
+        {registrationStatus === "error" && (
+          <div className="error-message">Registration Failed.</div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <div>
             <input
@@ -98,16 +108,17 @@ const RegistrationForm = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div>
-            <input
-              type="text"
-              placeholder="Gender"
-              className="input-field"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            />
-          </div>
-          <div>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            className="input-field"
+          >
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+
+          {/* <div>
             <input
               type="password"
               placeholder="Password"
@@ -123,37 +134,63 @@ const RegistrationForm = () => {
               className="input-field"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+
             />
-          </div>
+          </div> */}
+    
+          <input
+            type="password"
+            placeholder="Password"
+            className="input-field"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordMatchError(false);
+            }}
+          />
+
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className="input-field"
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setPasswordMatchError(false);
+            }}
+          />
+
+
           <div>
-            {/* <input
-              type="text"
-              placeholder="Location"
-              className="input-field"
-              value={location}
-              // onChange={(e) => setLocation(e.target.value)}
-              
-            /> */}
-           
-            <Search style={{  marginbottom: "10px",
-    // padding: "12px",
-    border: "1px solid #dddfe2",
-    borderradius: "4px",
-    fontsize: "16px",
-    display: "flex",
-    flexdirection: "column",
-    width: "85%",
-    marginleft:"0",
-    // padding: 20px;
-    border: "1px solid #dddfe2",
-    backgroundcolor: "#fff",
-    borderradius: "5px"}}
-    onLocationChange={handleLocationChange}
-    />
-          
+           <Search
+              style={{
+                marginbottom: "10px",
+                // padding: "12px",
+                border: "1px solid #dddfe2",
+                borderradius: "4px",
+                fontsize: "16px",
+                display: "flex",
+                flexdirection: "column",
+                width: "85%",
+                marginleft: "0",
+                // padding: 20px;
+                border: "1px solid #dddfe2",
+                backgroundcolor: "#fff",
+                borderradius: "5px"
+              }}
+              onLocationChange={handleLocationChange}
+            />
+
           </div>
           <div >
-            <button className="button-box" onClick={register} type="submit">Register</button>
+            <button
+              className="button-box"
+              onClick={register}
+              type="submit"
+              disabled={passwordMatchError} 
+            >
+              Register
+            </button>
           </div>
         </form>
       </div>
