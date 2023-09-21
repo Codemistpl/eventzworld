@@ -176,25 +176,74 @@ const Logindata = async (req, res) => {
   }
 };
 
+// const CreatePost = async (req, res) => {
+//   // console.log("test ", req.body);
+//   console.log(req.body.data, "body");
+//   let form = JSON.parse(req.body.data);
+//   let eventDate = form.eventDate;
+//   let eventTime = form.eventTime;
+//   const image = req.files.image[0].filename;
+//   const audio = req.files.audio[0].filename;
+//   const video = req.files.video[0].filename;
+//   // let video = req.file.filename; 
+
+//   // const playerinputs = req.body.inputs;
+//   const postdata = {
+//     name: form.name,
+//     eventVenue: form.eventVenue,
+//     category: form.category,
+//     image: image,
+//     audio: audio,
+//     video:video,
+//     eventDate: eventDate,
+//     eventTime: eventTime,
+//     addres: form.formatted_address,
+//     _lat: form.latitude,
+//     _lng: form.longitude,
+//     text: form.text,
+//   };
+//    try {
+//     const newdata = await create_post.create(postdata);
+//     console.log("newdata");
+//     // console.log(data);
+//     res.status(201).json(newdata);
+//   } catch (error) {
+//     console.error("Error creating post:", error);
+//     res.status(500).json({ message: "Error creating Post" });
+//   }
+// };
+
+
 const CreatePost = async (req, res) => {
-  // console.log("test ", req.body);
   console.log(req.body.data, "body");
   let form = JSON.parse(req.body.data);
   let eventDate = form.eventDate;
   let eventTime = form.eventTime;
-  const image = req.files.image[0].filename;
-  const audio = req.files.audio[0].filename;
-  const video = req.files.video[0].filename;
-  // let video = req.file.filename; 
 
-  // const playerinputs = req.body.inputs;
+  let image = null;
+  let audio = null;
+  let video = null;
+
+  // Check if the files have been uploaded
+  if (req.files.image) {
+    image = req.files.image[0].filename;
+  }
+
+  if (req.files.audio) {
+    audio = req.files.audio[0].filename;
+  }
+
+  if (req.files.video) {
+    video = req.files.video[0].filename;
+  }
+
   const postdata = {
     name: form.name,
     eventVenue: form.eventVenue,
     category: form.category,
     image: image,
     audio: audio,
-    video:video,
+    video: video,
     eventDate: eventDate,
     eventTime: eventTime,
     addres: form.formatted_address,
@@ -202,16 +251,18 @@ const CreatePost = async (req, res) => {
     _lng: form.longitude,
     text: form.text,
   };
-   try {
+
+  try {
     const newdata = await create_post.create(postdata);
     console.log("newdata");
-    // console.log(data);
     res.status(201).json(newdata);
   } catch (error) {
     console.error("Error creating post:", error);
     res.status(500).json({ message: "Error creating Post" });
   }
 };
+
+
 
 const getPostbylocation= async (req, res)=>{
   // const id = req.params.id;
@@ -243,27 +294,6 @@ const getCreatePost = async (req, res) => {
  res.status(200).json(getPostdata); 
 };
 
-// const getCreatePostbyid = async (req, res) => {
-//   const id = req.params.id;
-//    const distance = 25;
-//   const currentLocation =JSON.parse(req.params.location);
-//   console.log(currentLocation.lat)
-//   const lat = currentLocation.lat;
-//   const lng= currentLocation.lng;
-//   const getPostdata = await create_post.findAll({
-//     where:{id:id},
-//     order: [
-//     ['id', 'DESC'],
-//     ['name', 'ASC'],
-// ],});
-// let filteredPosts = getPostdata.filter((it) => {
-//   return getDistance(parseFloat(it._lat), parseFloat(it._lng), lat, lng) <= distance;
-// });
-//   res.status(200).json(filteredPosts); 
-// };
-
-
-
 const getCreatePostbyid = async (req, res) => {
   const id = req.params.id;
   const getPostdata = await create_post.findAll({
@@ -273,10 +303,10 @@ const getCreatePostbyid = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password} = req.body;
   console.log("IN REGISTER");
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password ) {
     return res
       .status(400)
       .json({ error: "Name, email, and password are required fields." });
@@ -308,39 +338,6 @@ const register = async (req, res) => {
   }
 };
 
-// const login = async (req, res) => {
-//   const { email, password } = req.body;
-//   console.log("IN LOGIN", email, password);
-
-//   if (!email || !password) {
-//     return res
-//       .status(400)
-//       .json({ error: "Email and password are required fields." });
-//   }
-
-//   try {
-//     // Find the user based on the provided email
-//     const user = await User.findOne({ where: { email } });
-
-//     if (!user) {
-//       return res.status(401).json({ error: "Invalid email or password." });
-
-//     }
-
-    
-//     if (user.password !== password) {
-//       return res.status(401).json({ error: "Invalid password." });
-//     }
-
-//     // Successful login
-//     // const token = await  createToken(guestUser); 
-
-//     res.json({ message: "Login successful.", token: token, Role: user.role});
-
-//   } catch (error) {
-//     res.status(500).json({ error: "An error occurred during login." });
-//   }
-// };
 
 
 const login = async (req, res) => {
