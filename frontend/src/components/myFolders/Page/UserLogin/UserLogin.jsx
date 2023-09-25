@@ -25,6 +25,7 @@ const LoginForm = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [showSignup, setShowSignup] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [showadminLogin, setShowadminLogin] = useState(false);
 
@@ -61,6 +62,7 @@ const LoginForm = () => {
   }
 
 
+  
   const Logindata = async (event) => {
     event.preventDefault();
     console.log("Form submitted", formData);
@@ -100,24 +102,22 @@ const LoginForm = () => {
       //   localStorage.setItem("role", "user");
       //   window.location.href = "/ViewPage"; 
       // }
-
-
-
     } catch (error) {
       console.error("Error occurred during login:", error.message);
-      window.alert("Invalid Credential")
-      
+      setError("Invalid Credential");
     }
-  };return (
+  };
+  
+  return (
     <div className="container">
       <div className="login-container">
         <h1>Login Page</h1>
         <form onSubmit={handleSubmit}>
           <div>
             <input
-              type="text"
+              type="email"
               placeholder="Username"
-              className="name"
+              className="email"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
@@ -126,11 +126,14 @@ const LoginForm = () => {
             <input
               type="password"
               placeholder="Password"
-              className="name"
+              className="password"
               value={password}
               onChange={handlePasswordChange}
             />
           </div>
+
+
+          {error && <div className="error-message">{error}</div>}
           
             <div  style={{
             margintop: " 10px",
@@ -145,11 +148,11 @@ const LoginForm = () => {
                 </div>
                 <Facebook />
                 <p className="link">
-                  <Link to="#" onClick={handleSignup}>Sign Up</Link>
+                  <Link to="#" onClick={handleSignup}><strong>Sign Up</strong></Link>
 
                 </p>
                 <p className="link">
-                  <Link to="#" onClick={handleAdminLogin}>Admin Login</Link>
+                  <Link to="#" onClick={handleAdminLogin}><strong>Admin Login</strong></Link>
 
                 </p>
               </div>

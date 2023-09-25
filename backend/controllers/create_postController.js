@@ -141,8 +141,7 @@ const aprooveData = async (req, res) => {
 
   const aproove = req.body.selectedItems;
 
-  // for update any type data  under try
-  // if data in a arre so data[] index
+  
 
   try {
     await create_post.update(

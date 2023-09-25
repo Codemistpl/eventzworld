@@ -34,7 +34,7 @@
   margin-bottom: 20px;
   border: 1px solid white;
   border-radius: 4px;
-  resize: vertical;
+  /* resize: vertical; */
   margin-left: 18px;
 
 }
@@ -92,6 +92,7 @@
 
 .text{
   min-height: 10rem;
+  resize: vertical;
 }
 
 .svg-inline--fa {

@@ -45,15 +45,12 @@ const PostBox = () => {
       !formData.category ||
       !formData.eventVenue ||
       !formData.text
-      // !formData.eventDate ||
-      // !formData.eventTime ||
-      // !formData.image
     ) {
       alert('Please fill in all required fields.');
       return;
     }
-
-    console.log('Form data submitted:', formData);
+   
+ console.log('Form data submitted:', formData);
 
     await CreatePost();
   };
@@ -100,34 +97,7 @@ const PostBox = () => {
   };
 
 
-  // const CreatePost = async () => {
-  //   console.log("Form submitted", formData);
-
-  //   const postDataToUpload = new FormData();
-  //   postDataToUpload.append("data", JSON.stringify(formData));
-  //   postDataToUpload.append("image", image);
-  //   postDataToUpload.append("video", formData.video);
-  //   postDataToUpload.append("audio", formData.audio);
-
-  //   try {
-  //     const res = await fetch(`${Api_url}/create_post/CreatePost`, {
-  //       method: "POST",
-  //       body: postDataToUpload,
-  //     });
-
-  //     if (res.ok) {
-  //       console.log('Post submitted successfully');
-  //       // You can perform additional actions here
-  //       window.location.href = '/ViewPage';
-  //     } else {
-  //       console.log('Post submission failed');
-  //       console.log(await res.text());
-  //     }
-  //   }
-  //   catch (error) {
-  //     console.error('An error occurred:', error);
-  //   }
-  // };
+  
 
   const CreatePost = async () => {
     console.log("Form submitted", formData);
