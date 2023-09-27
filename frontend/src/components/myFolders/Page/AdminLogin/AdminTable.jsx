@@ -37,9 +37,6 @@ const AdminTable = () => {
   const [aprooveId, setaprooveid] = useState()
 
 
-
-
-
   const toggleSelectAll = () => {
     setSelectAll((prevSelectAll) => !prevSelectAll);
     setItems((prevItems) =>
@@ -49,6 +46,7 @@ const AdminTable = () => {
       }))
     );
   };
+
   const handleItemSelect = (id) => {
     setItems((prevItems) =>
       prevItems.map((item) =>
@@ -56,14 +54,6 @@ const AdminTable = () => {
       )
     );
   };
-
-
-
-
-
-
-
-
   const handleReject = () => {
 
     const selectedItems = items.filter((item) => item.selected);
@@ -71,16 +61,12 @@ const AdminTable = () => {
     console.log("Selected items to reject:", selectedItems);
   };
 
-
   const handleApprove = () => {
 
     const selectedRows = items.filter((item) => item.selected);
 
     // Use the selectedRows array to perform actions on selected items
     console.log("Selected items to approve:", selectedRows)
-
-
-
 
 
     setItems((prevItems) =>
@@ -93,10 +79,6 @@ const AdminTable = () => {
     );
 
   };
-
-
-
-
 
   const approveData = async (event) => {
     event.preventDefault();
@@ -133,12 +115,6 @@ const AdminTable = () => {
       window.alert("An error occurred during approval");
     }
   }
-
-
-
-
-
-
 
   useEffect(() => {
     const fetchData = async () => {

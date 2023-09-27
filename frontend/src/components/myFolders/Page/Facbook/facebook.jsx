@@ -31,7 +31,7 @@ function Facebook({ onLogin }) {
       console.log("fb in database ", res);
 
       if (!res.ok) {
-        throw new Error('Error saving Facebook data');
+        // throw new Error('Error saving Facebook data');
       }
 
       // const data = await res.json();

@@ -30,7 +30,7 @@ function Search({ onLocationChange }) {
         style={{
           width: "85%",
           height: "46px",
-          marginTop: "10px",
+          marginTop: "0px",
           marginLeft: "18px",
           marginBottom: "20px",
           paddingRight: "20px",

@@ -26,6 +26,9 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     // allowNull: false,
   },
+  Role:{
+    type: DataTypes.STRING,
+  },
   _lat: {
     type: DataTypes.STRING,
     // allowNull: false,
@@ -361,7 +364,7 @@ const login = async (req, res) => {
     }
 
     
-    res.json({ message: 'Login successful.' });
+    res.json({ message: '', Role: user.Role });
   } catch (error) {
     res.status(500).json({ error: 'An error occurred during login.' });
   }

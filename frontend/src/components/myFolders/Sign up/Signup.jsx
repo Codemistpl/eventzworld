@@ -16,46 +16,40 @@ const RegistrationForm = () => {
   const [genderError, setGenderError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  
+  const [successMessage, setSuccessMessage] = useState("");
   const [passwordMatchError, setPasswordMatchError] = useState(false);
   const navigate = useNavigate();
 
   const handleLocationChange = (place) => {
-       const lat = place.geometry.location.lat();
-       const lng = place.geometry.location.lng();
-      }
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     let valid = true;
 
-    
     setNameError("");
     setEmailError("");
     setGenderError("");
     setPasswordError("");
     setConfirmPasswordError("");
 
-
-    
     if (!name) {
       setNameError("Name is required.");
       valid = false;
     }
 
-    
     if (!email) {
       setEmailError("Email is required.");
       valid = false;
     }
 
-    
     if (!gender) {
       setGenderError("Gender is required.");
       valid = false;
     }
-
 
     if (password.length < 8) {
       setPasswordError("Password must be at least 8 characters long.");
@@ -66,7 +60,7 @@ const RegistrationForm = () => {
       setConfirmPasswordError("Passwords do not match.");
       valid = false;
     }
-   if (!valid) {
+    if (!valid) {
       return;
     }
 
@@ -74,13 +68,18 @@ const RegistrationForm = () => {
       const response = await fetch(`${Api_url}/create_post/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, gender, password  }),
+        body: JSON.stringify({ name, email, gender, password }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        navigate("/login");
+        setSuccessMessage("User successfully registered.");
+        setTimeout(() => {
+          if (window.confirm("User successfully registered. Click OK to go to login page.")) {
+            navigate("/login");
+          }
+        }, 3000); // Delay the redirect after 3 seconds
       } else {
         console.error("Error registering user:", data.error);
       }
@@ -88,10 +87,12 @@ const RegistrationForm = () => {
       console.error("Error registering user:", error);
     }
   };
+
   return (
     <div className="box">
       <div className="registration-container">
         <h1>Create Account</h1>
+        <div style={{color:"red", fontSize:"20px"}}  className="success-message">{successMessage}</div>
 
         <form onSubmit={handleSubmit}>
           <div>
@@ -104,6 +105,7 @@ const RegistrationForm = () => {
             />
             <div className="error-message">{nameError}</div>
           </div>
+
           <div>
             <input
               type="email"
@@ -114,16 +116,17 @@ const RegistrationForm = () => {
             />
             <div className="error-message">{emailError}</div>
           </div>
+
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
-            className="input-field"
-          >
+            className="input-field">
             <option value="">Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
           <div className="error-message">{genderError}</div>
+
           <input
             type="password"
             placeholder="Password"
@@ -132,6 +135,7 @@ const RegistrationForm = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="error-message">{passwordError}</div>
+
           <input
             type="password"
             placeholder="Confirm Password"
@@ -140,34 +144,31 @@ const RegistrationForm = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <div className="error-message">{confirmPasswordError}</div>
-         
+
           <Search
-              style={{
-                marginbottom: "10px",
-                // padding: "12px",
-                border: "1px solid #dddfe2",
-                borderradius: "4px",
-                fontsize: "16px",
-                display: "flex",
-                flexdirection: "column",
-                width: "85%",
-                marginleft: "0",
-                // padding: 20px;
-                border: "1px solid #dddfe2",
-                backgroundcolor: "#fff",
-                borderradius: "5px"
-              }}
-              onLocationChange={handleLocationChange}
-            />
-          
-          
-          
-          
+            style={{
+              marginbottom: "10px",
+              // padding: "12px",
+              border: "1px solid #dddfe2",
+              borderradius: "4px",
+              fontsize: "16px",
+              display: "flex",
+              flexdirection: "column",
+              width: "85%",
+              marginleft: "0",
+              // padding: 20px;
+              border: "1px solid #dddfe2",
+              backgroundcolor: "#fff",
+              borderradius: "5px"
+            }}
+            onLocationChange={handleLocationChange}
+          />
+
           <div>
             <button
               className="button-box"
               type="submit"
-              disabled={passwordMatchError} 
+              disabled={passwordMatchError}
             >
               Register
             </button>

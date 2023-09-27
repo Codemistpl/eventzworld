@@ -49,8 +49,8 @@ const PostBox = () => {
       alert('Please fill in all required fields.');
       return;
     }
-   
- console.log('Form data submitted:', formData);
+
+    console.log('Form data submitted:', formData);
 
     await CreatePost();
   };
@@ -60,6 +60,7 @@ const PostBox = () => {
   const [image, setimage] = useState(null)
   const [video, setvideo] = useState(null)
   const [audio, setaudio] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState({
     image: '',
     audio: '',
@@ -97,8 +98,6 @@ const PostBox = () => {
   };
 
 
-  
-
   const CreatePost = async () => {
     console.log("Form submitted", formData);
 
@@ -122,8 +121,11 @@ const PostBox = () => {
       });
 
       if (res.ok) {
-        console.log('Post submitted successfully');
-        window.location.href = '/ViewPage';
+        setSuccessMessage('Post Created successfully');
+        setTimeout(() => {
+          setSuccessMessage(null); 
+          window.location.href = '/ViewPage';
+        }, 3000); 
       } else {
         console.log('Post submission failed');
         console.log(await res.text());
@@ -132,6 +134,7 @@ const PostBox = () => {
       console.error('An error occurred:', error);
     }
   };
+
 
   const handleImageUpload = (e) => {
     setFormData({
@@ -170,6 +173,7 @@ const PostBox = () => {
       <div className="post-box">
         <div>
           <h2>Create a Post</h2>
+          
           <form onSubmit={handleSubmit} method="post" enctype="multipart/form-data">
 
             <input
@@ -186,24 +190,20 @@ const PostBox = () => {
 
             />
 
-
-
             <select
-
-
               name="category"
               className="post-row"
               value={formData.category}
               onChange={handleChange}
-
             >
               <option value="">Select Event Category</option>
               <option value="sport">Sport</option>
               <option value="dance">Dance</option>
               <option value="Music">Music</option>
               <option value="art">Art</option>
-              {/* <option value="football"></option> */}
+              <option value="other">Other</option>
             </select>
+
             <input
               type="text"
               placeholder="Event Venue"
@@ -294,8 +294,6 @@ const PostBox = () => {
               </div>
             </div>
 
-
-
             <textarea
               placeholder="Enter your text here"
               name="text"
@@ -307,12 +305,14 @@ const PostBox = () => {
             <button type="submit" className="post-submit-button">
               Post
             </button>
+            {successMessage && (
+            <div style={{color:"red", fontSize:"20px"}} className="success-message">
+              {successMessage}
+            </div>
+          )}
+
           </form>
-
-
         </div>
-
-
       </div>
     </div>
   );

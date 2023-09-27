@@ -4,12 +4,12 @@ import Signup from '../../Sign up/Signup'
 import Main from '../../Main'
 import './UserLogin.css'
 import Facebook from '../Facbook/facebook'
-import AdminLogin from "../AdminLogin/AdminLogin";
+// import AdminLogin from "../AdminLogin/AdminLogin";
 import GuestLogin from "./GuestLogin"
 import { Api_url } from "../../../../constant";
 const LoginForm = () => {
 
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  // const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -27,7 +27,7 @@ const LoginForm = () => {
   const [showSignup, setShowSignup] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [showadminLogin, setShowadminLogin] = useState(false);
+  // const [showadminLogin, setShowadminLogin] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,17 +53,15 @@ const LoginForm = () => {
   }
 
 
-  const handleAdminLogin = () => {
-    setShowAdminLogin(true);
-  };
+  // const handleAdminLogin = () => {
+  //   setShowAdminLogin(true);
+  // };
 
-  if (showAdminLogin) {
-    return <AdminLogin />;
-  }
+  // if (showAdminLogin) {
+  //   return <AdminLogin />;
+  // }
 
-
-  
-  const Logindata = async (event) => {
+const Logindata = async (event) => {
     event.preventDefault();
     console.log("Form submitted", formData);
 
@@ -80,28 +78,16 @@ const LoginForm = () => {
 
       const data = await res.json();
       console.log(data);
-      if (data.message === "Login successful.") {
+
+      if (data.Role === 1) {
         localStorage.setItem("isLoggedIn", true);
-        window.location.href = "/ViewPage";
-        // if (formData.Role === "user") {
-        //   window.location.href = "/ViewPage"; 
-        // } else if (formData.Role === "1") {
-        //   window.location.href = "/AdminTable"; 
-        // }
+        localStorage.setItem("Role", 1);
+        window.location.href = "/AdminTable"; 
+      } else if (data.Role === 0) {
+        localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("Role", 0);
+        window.location.href = "/ViewPage"; 
       }
-
-      // const data = await res.json();
-      // console.log(data);
-
-      // if (data.role === "admin") {
-      //   localStorage.setItem("isLoggedIn", true);
-      //   localStorage.setItem("role", "admin");
-      //   navigate("/AdminTable");
-      // } else if (data.role === "user") {
-      //   localStorage.setItem("isLoggedIn", true);
-      //   localStorage.setItem("role", "user");
-      //   window.location.href = "/ViewPage"; 
-      // }
     } catch (error) {
       console.error("Error occurred during login:", error.message);
       setError("Invalid Credential");
@@ -151,10 +137,10 @@ const LoginForm = () => {
                   <Link to="#" onClick={handleSignup}><strong>Sign Up</strong></Link>
 
                 </p>
-                <p className="link">
+                {/* <p className="link">
                   <Link to="#" onClick={handleAdminLogin}><strong>Admin Login</strong></Link>
 
-                </p>
+                </p> */}
               </div>
             </div>
          

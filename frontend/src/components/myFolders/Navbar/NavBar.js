@@ -75,7 +75,7 @@ function Navbar() {
                 <UserDetails username="JohnDoe" email="" />
               </li> */}
               {/* ) : null} */}
-              
+
               {/* <li className="nav-item">
                 <NavLink
                   exact
@@ -97,7 +97,7 @@ function Navbar() {
                     className="nav-links"
                     onClick={handleClick}
                   >
-                   CreatePost
+                    CreatePost
                   </NavLink>
                 </li>
               ) : null}
@@ -106,9 +106,11 @@ function Navbar() {
                 {authenticated && (
                   <button
                     className=""
-                    style={{width:"80px" , fontsize: "50px", height: "55px", backgroundColor:"blue",
-                    color:"white",
-                    paddingtop: "7px"}}
+                    style={{
+                      width: "80px", fontsize: "50px", height: "55px", backgroundColor: "blue",
+                      color: "white",
+                      paddingtop: "7px"
+                    }}
                     onClick={() => {
                       setAuthenticated(false);
                       localStorage.removeItem("isLoggedIn");
@@ -147,7 +149,7 @@ function Navbar() {
               </li> */}
 
 
-{/* 
+              {/* 
               <li className="nav-item">
                 <NavLink
                   exact
@@ -160,8 +162,8 @@ function Navbar() {
                 </NavLink>
                 </li> */}
 
-                
-                <li className="nav-item">
+
+              <li className="nav-item">
                 {/* <NavLink
                   exact
                   to="/AdminLogin"
@@ -198,11 +200,11 @@ function Navbar() {
           <Route
             exact
             path="/UserLogin"
-            element={!authenticated ?<UserLogin loginHandler={loginHandler} />: <Navigate to='/ViewPage' />}
+            element={!authenticated ? <UserLogin loginHandler={loginHandler} /> : <Navigate to='/ViewPage' />}
           />
-          
-          <Route exact path="/ViewPage" element={authenticated ?<ViewPage />:<Navigate to="/UserLogin" />} />
-    
+
+          <Route exact path="/ViewPage" element={authenticated ? <ViewPage /> : <Navigate to="/UserLogin" />} />
+
           <Route exact path="/PostingBox" element={<PostingBox />} />
 
           <Route
@@ -213,28 +215,28 @@ function Navbar() {
 
           <Route exact path="/Form" element={<Form />} />
 
-          
-              <Route
-                exact
-                path="/AdminDashboard"
-                element={<AdminDashboard />}
-              />
 
-             
-              <Route exact path="/" component={<AdminDashboard/>} />
-              <Route path="/SeeMore/:id" element={<SeeMore />} />
-              {/* <Route path="/SeeMore/:id" component={SeeMore} /> */}
+          <Route
+            exact
+            path="/AdminDashboard"
+            element={<AdminDashboard />}
+          />
 
-              {/* <Route exact path="/ManagePosts" element={<ManagePosts />} /> */}
 
-              <Route exact path="/" component={<AdminDashboard/>} />
-              {/* <Route path="/Fulldetail/" component={Fulldetail} /> */}
+          <Route exact path="/" component={<AdminDashboard />} />
+          <Route path="/SeeMore/:id" element={<SeeMore />} />
+          {/* <Route path="/SeeMore/:id" component={SeeMore} /> */}
+
+          {/* <Route exact path="/ManagePosts" element={<ManagePosts />} /> */}
+
+          <Route exact path="/" component={<AdminDashboard />} />
+          {/* <Route path="/Fulldetail/" component={Fulldetail} /> */}
 
           <Route exact path="/AdminTable" element={<AdminTable />} />
           {/* <Route exact path="/AdminLogin" element={<AdminLogin />} /> */}
         </Routes>
-       
-      
+
+
       </div>
     </Router>
   );
