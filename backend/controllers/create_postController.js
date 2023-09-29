@@ -1,53 +1,52 @@
 const db = require("../models");
-const { Sequelize, Op, Model, DataTypes, where } = require("sequelize");
-const config = require("../config/constant");
-const {createToken} = require("../utils/util");
-const bcrypt = require('bcrypt');
-const {getDistance} = require("../services/services")
+const { createToken, tryCatch } = require("../utils/util");
+const { getDistance } = require("../services/services")
 
+const { Op } = require('sequelize');
 
-const sequelize = new Sequelize(config.DB, config.USER_DB, config.PASSWORD_DB, {
-  host: "localhost",
-  dialect: "mysql",
-  pool: { min: 0, max: 10, idle: 10000 },
-});
+// const sequelize = new Sequelize(config.DB, config.USER_DB, config.PASSWORD_DB, {
+//   host: "localhost",
+//   dialect: "mysql",
+//   pool: { min: 0, max: 10, idle: 10000 },
+// });
 
-const User = sequelize.define("User", {
-  name: {
-    type: DataTypes.STRING,
-    // allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING,
-    // allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING,
-    // allowNull: false,
-  },
-  Role:{
-    type: DataTypes.STRING,
-  },
-  _lat: {
-    type: DataTypes.STRING,
-    // allowNull: false,
-  },
-  _lng: {
-    type: DataTypes.STRING,
-    // allowNull: false,
-  },
-  addres: {
-    type: DataTypes.STRING,
-    // allowNull: false,
-  },
-  fb_id: {
-    type:DataTypes.STRING,
-  },
-  accessToken: {
-      type:DataTypes.STRING,
-    },
-});
+// const User = sequelize.define("User", {
+//   name: {
+//     type: DataTypes.STRING,
+//     // allowNull: false,
+//   },
+//   email: {
+//     type: DataTypes.STRING,
+//     // allowNull: false,
+//     unique: true,
+//   },
+//   password: {
+//     type: DataTypes.STRING,
+//     // allowNull: false,
+//   },
+//   Role:{
+//     type: DataTypes.STRING,
+//   },
+//   _lat: {
+//     type: DataTypes.STRING,
+//     // allowNull: false,
+//   },
+//   _lng: {
+//     type: DataTypes.STRING,
+//     // allowNull: false,
+//   },
+//   addres: {
+//     type: DataTypes.STRING,
+//     // allowNull: false,
+//   },
+//   fb_id: {
+//     type:DataTypes.STRING,
+//   },
+//   accessToken: {
+//       type:DataTypes.STRING,
+//     },
+// });
+const User = db.users;
 
 
 const FacebookData = User;
@@ -58,22 +57,24 @@ const responseFacebook = async (req, res) => {
   try {
     console.log("requested body", req.body);
     // Check if a user with the provided ID already exists
-    const existingUser = await FacebookData.findOne({ where: { fb_id:id } });
- console.log( existingUser,"exuser")
+    const existingUser = await FacebookData.findOne({ where: { fb_id: id } });
+    console.log(existingUser, "exuser")
     if (existingUser) {
       // If user exists, update the access token
       await existingUser.update({ accessToken });
-      
-      return res.status(200).json({ message: 'Access token updated successfully',accessToken,
-      name,
-      id, });
+
+      return res.status(200).json({
+        message: 'Access token updated successfully', accessToken,
+        name,
+        id,
+      });
     }
 
     // Create a new user if not already exists
     await FacebookData.create({
       accessToken,
       name,
-      fb_id:id,
+      fb_id: id,
     });
 
     // Send a success response
@@ -95,7 +96,7 @@ const create_post = db.create_post;
 const getDatabyid = async (req, res) => {
   try {
     const sevenDaysFromNow = new Date(
-      new Date().getTime() + 7 * 24 *  60 * 60 * 1000
+      new Date().getTime() + 7 * 24 * 60 * 60 * 1000
     );
     const Today = new Date(new Date().getTime() - 23 * 60 * 60 * 1000);
     // const userLocation = req.user.addres;
@@ -107,7 +108,7 @@ const getDatabyid = async (req, res) => {
         status: "1",
         // addres: userLocation,
         eventDate: {
-          [Sequelize.Op.between]: [Today, sevenDaysFromNow],
+          [Op.between]: [Today, sevenDaysFromNow],
         },
       },
     });
@@ -144,7 +145,7 @@ const aprooveData = async (req, res) => {
 
   const aproove = req.body.selectedItems;
 
-  
+
 
   try {
     await create_post.update(
@@ -266,34 +267,36 @@ const CreatePost = async (req, res) => {
 
 
 
-const getPostbylocation= async (req, res)=>{
+const getPostbylocation = async (req, res) => {
   // const id = req.params.id;
-try{  
-  const distance = 25;
-const currentLocation =JSON.parse(req.params.location);
- console.log(currentLocation.lat)
- const lat = currentLocation.lat;
- const lng= currentLocation.lng;
- const getPostdata = await create_post.findAll({
-  where : {status:1},
-  //  where:{id:id},
-   order: [
-   ['id', 'DESC'],
-   ['name', 'ASC'],
-],});
-let filteredPosts = getPostdata.filter((it) => {
- return getDistance(parseFloat(it._lat), parseFloat(it._lng), lat, lng) <= distance;
-});
- res.status(200).json(filteredPosts); 
+  try {
+    const distance = 25;
+    const currentLocation = JSON.parse(req.params.location);
+    console.log(currentLocation.lat)
+    const lat = currentLocation.lat;
+    const lng = currentLocation.lng;
+    const getPostdata = await create_post.findAll({
+      where: { status: 1 },
+      //  where:{id:id},
+      order: [
+        ['id', 'DESC'],
+        ['name', 'ASC'],
+      ],
+    });
+    let filteredPosts = getPostdata.filter((it) => {
+      return getDistance(parseFloat(it._lat), parseFloat(it._lng), lat, lng) <= distance;
+    });
+    res.status(200).json(filteredPosts);
 
-}catch(error){console.log(error)}} 
+  } catch (error) { console.log(error) }
+}
 
 
 
 const getCreatePost = async (req, res) => {
- 
-  const getPostdata = await create_post.findAll({}); 
- res.status(200).json(getPostdata); 
+
+  const getPostdata = await create_post.findAll({});
+  res.status(200).json(getPostdata);
 };
 
 const getCreatePostbyid = async (req, res) => {
@@ -305,10 +308,10 @@ const getCreatePostbyid = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { name, email, password} = req.body;
+  const { name, email, password } = req.body;
   console.log("IN REGISTER");
 
-  if (!name || !email || !password ) {
+  if (!name || !email || !password) {
     return res
       .status(400)
       .json({ error: "Name, email, and password are required fields." });
@@ -342,33 +345,28 @@ const register = async (req, res) => {
 
 
 
-const login = async (req, res) => {
+const login = tryCatch( async (req, res) => {
   const { email, password } = req.body;
-  console.log("IN LOGIN", email , password)
+  console.log("IN LOGIN", email, password)
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required fields.' });
   }
 
-  try {
-    
-    const user = await User.findOne({ where: { email } });
+     const user = await User.findOne({ where: { email } });
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password.' });
     }
 
-    
+
     if (user.password !== password) {
       return res.status(401).json({ error: 'Invalid email or password.' });
     }
 
-    
-    res.json({ message: '', Role: user.Role });
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred during login.' });
-  }
-};
+
+    return res.status(200).json({ message: 'success', Role: user.Role });
+ });
 
 const guestlogin = async (req, res) => {
   try {
@@ -378,10 +376,10 @@ const guestlogin = async (req, res) => {
     if (!guestUser) {
       return res.status(404).json({ error: "Guest user not found." });
     }
-   console.log(req.body.password)
+    console.log(req.body.password)
     if (req.body.password === 'guest@123') {
-      const token = await createToken(guestUser); 
-      return res.json({ message: "Login successful.", token: token, Role: guestUser.role});
+      const token = await createToken(guestUser);
+      return res.json({ message: "Login successful.", token: token, Role: guestUser.role });
     } else {
       return res.status(401).json({ error: "Invalid password for guest user." });
     }

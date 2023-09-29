@@ -4,6 +4,15 @@ const bycrypt = require("bcrypt");
 const { check } = require("express-validator");
 const multer = require("multer");
 const { diskStorage } = require("multer");
+const winston = require('winston');
+
+const logger = winston.createLogger({
+  level: 'error',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+  ],
+});
 
 const createToken = (user) => {
 	var token = jwt.sign({ sub: user.email }, config.JWT_SECRET, {
@@ -91,6 +100,22 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 
 const upload = multer({ storage: storage }).fields([{ name: 'audio' }, { name: 'image' }, { name: 'video' }])
 
+const tryCatch = (controller) => {
+	return async (req, res) => {
+		try {
+			await controller(req, res);
+		} catch (error) {
+			
+			logger.error('An error occurred:', error);
+			res.status(500).json({
+				success: false,
+				message: "Something Went Wrong",
+				error: error,
+			});
+		}
+	};
+};
+
 module.exports = {
 	createToken,
 	verifyPassword,
@@ -98,4 +123,6 @@ module.exports = {
 	formValidator,
 	createHash,
 	upload,
+	tryCatch,
+	logger
 };
