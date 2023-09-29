@@ -120,49 +120,53 @@ const getDatabyid = async (req, res) => {
   }
 };
 
-// const getDatabyid = async (req, res) => {
-//   // const id =req.params.id
-//   const sevenDaysFromNow = new Date(new Date().setDate(new Date().getDate() + 7));
-//   const getPostdata = await create_post.findAll({
-//     where :{ stattus: "1" } ,
-//     // start_datetime: {
-//     //   [Op.gte]: moment().subtract(7, 'days').toDate()}
-//     createdAt: {
-//       [Sequelize.Op.gte]: new Date(new Date() - (7  24  60  60  1000))
-//       // my_date: {
-//       //   $gt: new Date(),
-//       //   $lt: sevenDaysFromNow,
-//       // },
-//     }
+// const aprooveData = async (req, res) => {
+//   console.log(req.body);
 
-//   }); // retrieve data from the database
-//   res.status(200).json(getPostdata); // send the retrieved data in the response
-//   console.log(getPostdata,"post data")
+//   const aproove = req.body.selectedItems;
+
+
+
+//   try {
+//     await create_post.update(
+//       { status: "1" },
+//       {
+//         where: {
+//           id: req.body.selectedItems[0].id,
+//         },
+//       }
+//     );
+//     console.log(aproove);
+//     res.status(201).json(aproove);
+//   } catch (error) {
+//     console.error("Error creating :", error);
+//     res.status(500).json({ message: "Error creating player" });
+//   }
 // };
 
 const aprooveData = async (req, res) => {
-  console.log(req.body);
-
-  const aproove = req.body.selectedItems;
-
-
+  const approvedItems = req.body.selectedItems;
 
   try {
-    await create_post.update(
-      { status: "1" },
-      {
-        where: {
-          id: req.body.selectedItems[0].id,
-        },
-      }
-    );
-    console.log(aproove);
-    res.status(201).json(aproove);
+    
+    for (const item of approvedItems) {
+      await create_post.update(
+        { status: "1" },
+        {
+          where: {
+            id: item.id,
+          },
+        }
+      );
+    }
+
+    res.status(201).json({ message: "Items approved successfully!" });
   } catch (error) {
-    console.error("Error creating :", error);
-    res.status(500).json({ message: "Error creating player" });
+    console.error("Error approving items:", error);
+    res.status(500).json({ message: "Error approving items" });
   }
 };
+
 
 const Logindata = async (req, res) => {
   console.log(req.body);
@@ -178,43 +182,6 @@ const Logindata = async (req, res) => {
     res.status(500).json({ message: "Error creating player" });
   }
 };
-
-// const CreatePost = async (req, res) => {
-//   // console.log("test ", req.body);
-//   console.log(req.body.data, "body");
-//   let form = JSON.parse(req.body.data);
-//   let eventDate = form.eventDate;
-//   let eventTime = form.eventTime;
-//   const image = req.files.image[0].filename;
-//   const audio = req.files.audio[0].filename;
-//   const video = req.files.video[0].filename;
-//   // let video = req.file.filename; 
-
-//   // const playerinputs = req.body.inputs;
-//   const postdata = {
-//     name: form.name,
-//     eventVenue: form.eventVenue,
-//     category: form.category,
-//     image: image,
-//     audio: audio,
-//     video:video,
-//     eventDate: eventDate,
-//     eventTime: eventTime,
-//     addres: form.formatted_address,
-//     _lat: form.latitude,
-//     _lng: form.longitude,
-//     text: form.text,
-//   };
-//    try {
-//     const newdata = await create_post.create(postdata);
-//     console.log("newdata");
-//     // console.log(data);
-//     res.status(201).json(newdata);
-//   } catch (error) {
-//     console.error("Error creating post:", error);
-//     res.status(500).json({ message: "Error creating Post" });
-//   }
-// };
 
 
 const CreatePost = async (req, res) => {
@@ -293,11 +260,14 @@ const getPostbylocation = async (req, res) => {
 
 
 
-const getCreatePost = async (req, res) => {
+const getCreatePost = tryCatch(async (req, res) => {
+  const getPostdata = await create_post.findAll({
+    order: [['created_at', 'DESC']], 
+  }); 
+  console.log(getPostdata)
+  res.status(200).json(getPostdata); 
+});
 
-  const getPostdata = await create_post.findAll({});
-  res.status(200).json(getPostdata);
-};
 
 const getCreatePostbyid = async (req, res) => {
   const id = req.params.id;
@@ -306,6 +276,7 @@ const getCreatePostbyid = async (req, res) => {
   }); // retrieve data from the database
   res.status(200).json(getPostdata); // send the retrieved data in the response
 };
+
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -367,6 +338,7 @@ const login = tryCatch( async (req, res) => {
 
     return res.status(200).json({ message: 'success', Role: user.Role });
  });
+ 
 
 const guestlogin = async (req, res) => {
   try {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Api_url } from "../../../../constant";
+// import { useNavigate } from "react";
 // import AdminDashboard from '../../Page/AdmunDashboard/AdminDashboard';
 
 const Card = ({ item }) => {
@@ -30,12 +31,12 @@ const Card = ({ item }) => {
 };
 
 const AdminTable = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(null);
   const [selectAll, setSelectAll] = useState(false);
   const [tableData, setTableData] = useState()
   const [selectedData, setSelectedData] = useState([]);
   const [aprooveId, setaprooveid] = useState()
-
+  // const navigate = useNavigate();
 
   const toggleSelectAll = () => {
     setSelectAll((prevSelectAll) => !prevSelectAll);
@@ -83,26 +84,24 @@ const AdminTable = () => {
   const approveData = async (event) => {
     event.preventDefault();
     console.log("Form submitted", items);
-
+  
     try {
       let selectedItems = items.filter((item) => item.selected);
-
+  
       const response = await fetch(`${Api_url}/create_post/aprooveData`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ selectedItems }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
+  
       // Assuming the API call was successful, update the 'approved' property of selected items
       setItems((prevItems) =>
         prevItems.map((item) => {
-          // if (selectedItems.some((selectedItem) => selectedItem.id === item.id))
-          if
-            (selectedItems = items.filter((item) => item.selected)) {
+          if (selectedItems.some((selectedItem) => selectedItem.id === item.id)) {
             return { ...item, approved: true, selected: false };
           }
           return item;
@@ -115,18 +114,20 @@ const AdminTable = () => {
       window.alert("An error occurred during approval");
     }
   }
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:4113/create_post/getCreatePost"
+          // "http://localhost:4113/api/create_post/getCreatePost"
+          `${Api_url}/create_post/getCreatePost`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
         setItems(data);
+        console.log(data, "post")
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -134,6 +135,17 @@ const AdminTable = () => {
 
     fetchData();
   }, []);
+
+
+  // useEffect(()=>{
+    
+  //   const  isLoggedIn = localStorage.getItem("isLoggedIn")
+  //   if(! isLoggedIn) 
+  //   {navigate("login")}
+  //   else{
+  //     console.log("log out")
+  //   }
+  //    })
 
   const handleEdit = (id) => {
     setaprooveid(id)
@@ -171,7 +183,7 @@ const AdminTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {items.map((item, index) => (
+                {items?items.map((item, index) => (
                   <tr>
                     <th scope="row">{index + 1}</th>
                     <td>{item.name}</td>
@@ -196,7 +208,7 @@ const AdminTable = () => {
                       )}
                     </td>
                   </tr>
-                ))}
+                )):null}
 
                 {/* <tbody>
                   {items.map((item, index) => (

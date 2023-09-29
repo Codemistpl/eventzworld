@@ -8,42 +8,43 @@ module.exports = (sequelize, DataTypes) => {
       eventVenue: {
         type: DataTypes.STRING,
       },
-      category:{
+      category: {
         type: DataTypes.STRING,
       },
       eventDate: {
-          type: DataTypes.STRING,
-        },
-        eventTime: {
-          type: DataTypes.STRING,
-        },
-        _lat: {
-          type: DataTypes.STRING,
-        },
+        type: DataTypes.STRING,
+      },
+      eventTime: {
+        type: DataTypes.STRING,
+      },
+      _lat: {
+        type: DataTypes.STRING,
+      },
       _lng: {
-          type: DataTypes.STRING,
-        },
-        video:{
-          type:DataTypes.STRING,
-        },
-        image:{
-          type:DataTypes.STRING
-        },
-        audio:{
-          type:DataTypes.STRING
-        },
-        status:{
-          type:DataTypes.NUMBER
-        },
-      
-       addres:{
-        type:DataTypes.STRING
-       },
-       text:{
-        type:DataTypes.STRING
-       }
-              
-      
+        type: DataTypes.STRING,
+      },
+
+      video: {
+        type: DataTypes.STRING,
+      },
+      image: {
+        type: DataTypes.STRING
+      },
+      audio: {
+        type: DataTypes.STRING
+      },
+      status: {
+        type: DataTypes.NUMBER
+      },
+
+      addres: {
+        type: DataTypes.STRING
+      },
+      text: {
+        type: DataTypes.STRING
+      }
+
+
     },
     {
       createdAt: "created_at",
