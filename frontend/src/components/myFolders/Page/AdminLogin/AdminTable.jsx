@@ -7,11 +7,7 @@ import { Api_url } from "../../../../constant";
 const Card = ({ item }) => {
   return (
     <div className="card">
-      {/* <img
-        className="image-title"
-        src={`http://localhost:4113/image/${item.image}`}
-        alt={item.title}
-      /> */}
+    
       {
         <div className="text-holder">
           <h3>{item.name}</h3>
@@ -154,11 +150,11 @@ const AdminTable = () => {
 
   return (
     <>
-      <div className="container-fluid" style={{ overflow: "auto" }}>
-        <div className="row justify-content-center">
-          <div className="col-10">
-            <table class="table table-borderless mt-5">
-              <thead>
+    <div className="container-fluid" style={{ overflow: "auto" }}>
+      <div className="row justify-content-center">
+        <div className="col-10">
+          <table className="table table-bordered mt-5"> 
+            <thead className="thead-dark">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">name</th>
@@ -237,7 +233,7 @@ const AdminTable = () => {
       <td>
 
         {/* {/ <button onClick={handleReject}>Reject</button> /} */}
-        <button onClick={approveData} >Approve</button>
+        <button onClick={approveData} className="btn btn-primary">Approve</button> 
       </td>
 
     </>
