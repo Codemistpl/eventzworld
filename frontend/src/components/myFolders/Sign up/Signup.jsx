@@ -76,7 +76,7 @@ const RegistrationForm = () => {
       if (response.ok) {
         setSuccessMessage("User successfully registered.");
         setTimeout(() => {
-          if (window.confirm("Click OK to go to login page.")) {
+          if (window.confirm("User successfully registered. Click OK to go to login page.")) {
             navigate("/login");
           }
         }, 3000); // Delay the redirect after 3 seconds

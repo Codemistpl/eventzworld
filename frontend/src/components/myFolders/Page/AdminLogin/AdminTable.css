@@ -1,11 +1,29 @@
 .navbar {
-    background-color: #1f5156;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    position: sticky;
-    top: 0;
-    z-index: 20;
-  }
+  background-color: rgb(34, 193, 195);
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination button {
+  font-size: 14px;
+  /* padding: 5px 10px; */
+  margin: 0 5px;
+}
+
+.pagination span {
+  font-size: 14px;
+  margin: 0 5px;
+}

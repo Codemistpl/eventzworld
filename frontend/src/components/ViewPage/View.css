@@ -4,7 +4,8 @@
 .view {
  background-color:#D2E5D8;
   padding: 20px;
-  height: 100vh auto;
+  height: 100vh;
+  min-height: auto;
   max-height: 100vh auto;
   /* background-image: url('./eve.jpg'); 
   background-size: cover; 

@@ -38,11 +38,20 @@ function Search({ onLocationChange }) {
           border: "1px solid white",
           resize: "vertical",
         }}
-        apiKey={"AIzaSyAU0DASyH7nq0ypKB-en5f7TK2dDPvWpJI"}
+        apiKey={"AIzaSyAn4eeaT18hannefB6jKR35GmY7iVdDCUs"}
+        // onPlaceSelected={place => {
+        //   onLocationChange(place);
+        //   console.log("PlaceSelected")
+        // }}
         onPlaceSelected={place => {
-          onLocationChange(place);
-          console.log("PlaceSelected")
+          if (place && place.geometry) {
+            onLocationChange(place);
+            console.log("PlaceSelected")
+          } else {
+            console.error("Invalid place object:", place);
+          }
         }}
+        
       />
     </>
   );

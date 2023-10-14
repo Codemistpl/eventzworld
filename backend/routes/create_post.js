@@ -9,23 +9,30 @@ const {
   guestlogin,
   aprooveData,
   getDatabyid,
-getCreatePostbyid,
-responseFacebook
+  getCreatePostbyid,
+  responseFacebook,
+  saveUserData,
+  rejectData,
+  verifyUser,
+  updateProfile
 } = require("../controllers/create_postController");
 const { upload } = require("../utils/util");
 const router = express.Router();
 // router.post("/logindata",Logindata);
-router.post("/CreatePost",upload ,CreatePost)
-router.get("/getCreatePost",getCreatePost)
-router.post("/register",register)
-router.post("/login",login)
-router.post("/guestlogin",guestlogin)
+router.post("/CreatePost", upload, CreatePost)
+router.get("/getCreatePost", getCreatePost)
+router.post("/register", register)
+router.post("/login", login)
+router.post("/guestlogin", guestlogin)
 router.post('/responseFacebook', responseFacebook)
-router.get('/getPostbylocation/:location',getPostbylocation)
+router.post('/saveUserData',saveUserData);
+router.get('/getPostbylocation/:location', getPostbylocation)
 router.get('/getCreatePostbyid/:id', getCreatePostbyid);
-router.post('/aprooveData',aprooveData)
-router.get('/getDatabyid',getDatabyid)
-
+router.post('/aprooveData', aprooveData)
+router.post('/rejectData', rejectData)
+router.get('/getDatabyid', getDatabyid)
+router.post('/verifyUser', verifyUser);
+router.post('/updateProfile', updateProfile);
 
 
 module.exports = router;

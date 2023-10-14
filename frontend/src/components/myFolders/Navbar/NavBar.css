@@ -1,9 +1,8 @@
 .navbar {
-  background-color:rgba(252, 127, 225, 0.698);
-  /* background-image: url('./eve.jpg'); 
-  background-size: cover; 
-  background-repeat: no-repeat;  */
-  height: 100px;
+  background-color:rgba(34, 193, 195, 1);
+ 
+  height: 90px;
+  max-width: 1500px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,11 +14,12 @@
 
 .nav-container {
   display: flex;
+  /* background-color:rgba(34, 193, 195, 1); */
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 80px;
-  max-width: 1500px;
+   width: 100%;
+   height: 80px;
+   max-width: 1500px;
 }
 
 .nav-logo {
@@ -80,12 +80,52 @@
   display: none;
 }
 
+
+
+.logout-button {
+  margin-top: 10px;
+  /* width: 11px; */
+}
+
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  top: 100%; /* Position below the username */
+  right: 0; /* Align with the username */
+}
+
+.dropdown-content a {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  color: black;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.user-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
 @media screen and (max-width: 960px) {
-  .nav-menu {
+.nav-menu {
     display: flex;
     flex-direction: column;
     width: 100%;
-    border-top: 1pxsolid #fff;
+    /* border-top: 1px solid #fff; */
     position: absolute;
     top: 80px;
     left: -110%;
@@ -94,11 +134,12 @@
   }
 
   .nav-menu.active {
-    background: #1f5156;
+    background: rgba(34, 193, 195, 1);
     left: 0px;
     opacity: 1;
     transition: all 0.5s ease;
     z-index: 1;
+    
   }
   .nav-item .active {
     color: #ffdd40;
@@ -132,15 +173,6 @@
 
 
 
-/* this is my nav css */
-
-.navbar {
-    background-color: #333;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-  }
   
   .navbar-logo {
     font-size: 20px;

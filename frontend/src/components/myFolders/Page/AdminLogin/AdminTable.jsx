@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Api_url } from "../../../../constant";
+import "./AdminTable.css"
 // import { useNavigate } from "react";
 // import AdminDashboard from '../../Page/AdmunDashboard/AdminDashboard';
 
@@ -31,7 +32,9 @@ const AdminTable = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [tableData, setTableData] = useState()
   const [selectedData, setSelectedData] = useState([]);
-  const [aprooveId, setaprooveid] = useState()
+  const [aprooveId, setaprooveid] = useState();
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const [totalPages, setTotalPages] = useState(1);
   // const navigate = useNavigate();
 
   const toggleSelectAll = () => {
@@ -103,34 +106,36 @@ const AdminTable = () => {
           return item;
         })
       );
-      window.alert("Items approved successfully!");
+      
     } catch (error) {
       console.error("Error occurred during approval:", error.message);
-      // Handle the error and display an appropriate message to the user
-      window.alert("An error occurred during approval");
+      
+      // window.alert("An error occurred during approval");
     }
   }
   
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          // "http://localhost:4113/api/create_post/getCreatePost"
-          `${Api_url}/create_post/getCreatePost`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setItems(data);
-        console.log(data, "post")
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  
 
-    fetchData();
-  }, []);
+
+  const fetchData = async (page) => {
+    try {
+      const response = await fetch(`${Api_url}/create_post/getCreatePost?page=${page}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setItems(data.posts);
+      setTotalPages(data.totalPages);
+      console.log(data, "post");
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [currentPage]);
+
 
 
   // useEffect(()=>{
@@ -147,6 +152,34 @@ const AdminTable = () => {
     setaprooveid(id)
 
   }
+  
+  
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const handleNextPage = () => {
+    handlePageChange(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    handlePageChange(currentPage - 1);
+  };
+
+  const renderPagination = () => {
+    const pagination = [];
+    if (currentPage > 1) {
+      pagination.push(<button key="prev" onClick={handlePrevPage}>&lt;</button>);
+    }
+    pagination.push(<span key="current">{currentPage}</span>);
+    if (currentPage < totalPages) {
+      pagination.push(<button key="next" onClick={handleNextPage}>&gt;</button>);
+    }
+    return pagination;
+  };
+
 
   return (
     <>
@@ -206,34 +239,32 @@ const AdminTable = () => {
                   </tr>
                 )):null}
 
-                {/* <tbody>
-                  {items.map((item, index) => (
-                    <Card key={item.id} item={item} />
-                  ))}
-                </tbody> */}
               </tbody>
             </table>
           </div>
         </div>
       </div>
       <td>
-        {/* {!items.some((item) => item.selected && !item.approved) ? (
-        <button onClick={handleApprove}>Approve</button>
-      ) : (
-        <button onClick={approveData}>Approve Selected</button>
-      )} */}
+    
       </td>
-      <div>
-        {/* {/ Render the button if at least one item is selected /} */}
-        {/* {selectedData.length > 0 && (
-    <button onClick={handleApprove}>Approve</button>
-  )} */}
+   
+
+      <div className="pagination">
+        {renderPagination()}
       </div>
 
       <td>
 
-        {/* {/ <button onClick={handleReject}>Reject</button> /} */}
-        <button onClick={approveData} className="btn btn-primary">Approve</button> 
+        
+        <button onClick={approveData} className="" style={{marginTop:"20px",
+         backgroundColor:"#1a73e8",
+         color:"white",
+         fontSize:"16px",
+         fontFamily:"bold",
+         alignItems:"center",
+         textAlign:"center",
+         justifyContent:"center"
+         }}>Approve</button> 
       </td>
 
     </>
@@ -241,3 +272,4 @@ const AdminTable = () => {
 };
 
 export default AdminTable;
+

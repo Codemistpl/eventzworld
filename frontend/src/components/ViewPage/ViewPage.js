@@ -90,7 +90,8 @@ const ViewPage = () => {
         (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentLocation({ lat: latitude, lng: longitude});
-          console.log(latitude, longitude)
+          // console.log(latitude, longitude)
+          console.log(position, "text")
         },
         (error) => {
           console.error('Error getting location:', error);

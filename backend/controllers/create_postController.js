@@ -1,51 +1,10 @@
 const db = require("../models");
 const { createToken, tryCatch } = require("../utils/util");
 const { getDistance } = require("../services/services")
-
+const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
 
-// const sequelize = new Sequelize(config.DB, config.USER_DB, config.PASSWORD_DB, {
-//   host: "localhost",
-//   dialect: "mysql",
-//   pool: { min: 0, max: 10, idle: 10000 },
-// });
 
-// const User = sequelize.define("User", {
-//   name: {
-//     type: DataTypes.STRING,
-//     // allowNull: false,
-//   },
-//   email: {
-//     type: DataTypes.STRING,
-//     // allowNull: false,
-//     unique: true,
-//   },
-//   password: {
-//     type: DataTypes.STRING,
-//     // allowNull: false,
-//   },
-//   Role:{
-//     type: DataTypes.STRING,
-//   },
-//   _lat: {
-//     type: DataTypes.STRING,
-//     // allowNull: false,
-//   },
-//   _lng: {
-//     type: DataTypes.STRING,
-//     // allowNull: false,
-//   },
-//   addres: {
-//     type: DataTypes.STRING,
-//     // allowNull: false,
-//   },
-//   fb_id: {
-//     type:DataTypes.STRING,
-//   },
-//   accessToken: {
-//       type:DataTypes.STRING,
-//     },
-// });
 const User = db.users;
 
 
@@ -90,6 +49,47 @@ const responseFacebook = async (req, res) => {
   }
 };
 
+const GoogleData = User;
+
+const saveUserData = async (req, res) => {
+  const { clientId, credential, userData } = req.body;
+  console.log('Request received:', req.body); // Log the request body
+
+
+  try {
+    if (!clientId) {
+      return res.status(400).json({ message: 'Client ID is missing' });
+    }
+
+    let existingUser = await User.findOne({ where: { Client_Id: clientId } });
+
+    if (existingUser) {
+      await existingUser.update({ credential }); 
+
+      return res.status(200).json({
+        message: 'Access token updated successfully',
+        credential,
+        clientId 
+      });
+    }
+
+    existingUser = await User.create({
+      credential,
+      Client_Id: clientId
+    });
+
+    res.status(200).json({
+      message: 'Google data saved successfully',
+      credential,
+      clientId
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
 
 const create_post = db.create_post;
 
@@ -120,29 +120,7 @@ const getDatabyid = async (req, res) => {
   }
 };
 
-// const aprooveData = async (req, res) => {
-//   console.log(req.body);
 
-//   const aproove = req.body.selectedItems;
-
-
-
-//   try {
-//     await create_post.update(
-//       { status: "1" },
-//       {
-//         where: {
-//           id: req.body.selectedItems[0].id,
-//         },
-//       }
-//     );
-//     console.log(aproove);
-//     res.status(201).json(aproove);
-//   } catch (error) {
-//     console.error("Error creating :", error);
-//     res.status(500).json({ message: "Error creating player" });
-//   }
-// };
 
 const aprooveData = async (req, res) => {
   const approvedItems = req.body.selectedItems;
@@ -166,6 +144,30 @@ const aprooveData = async (req, res) => {
     res.status(500).json({ message: "Error approving items" });
   }
 };
+
+
+const rejectData = async (req, res) => {
+  const rejectedItems = req.body.selectedItems;
+
+  try {
+    for (const item of rejectedItems) {
+      await create_post.update(
+        { status: "2" }, // Assuming '2' represents rejected status
+        {
+          where: {
+            id: item.id,
+          },
+        }
+      );
+    }
+
+    res.status(201).json({ message: "Items rejected successfully!" });
+  } catch (error) {
+    console.error("Error rejecting items:", error);
+    res.status(500).json({ message: "Error rejecting items" });
+  }
+};
+
 
 
 const Logindata = async (req, res) => {
@@ -256,17 +258,28 @@ const getPostbylocation = async (req, res) => {
     res.status(200).json(filteredPosts);
 
   } catch (error) { console.log(error) }
-}
+} 
 
 
+
+const ITEMS_PER_PAGE = 10; // Define the number of items per page
 
 const getCreatePost = tryCatch(async (req, res) => {
-  const getPostdata = await create_post.findAll({
-    order: [['created_at', 'DESC']], 
-  }); 
-  console.log(getPostdata)
-  res.status(200).json(getPostdata); 
+  const page = req.query.page || 1; // Get the page number from the request query
+  
+  const offset = (page - 1) * ITEMS_PER_PAGE;
+
+  const getPostdata = await create_post.findAndCountAll({
+    order: [['created_at', 'DESC']],
+    limit: ITEMS_PER_PAGE,
+    offset: offset
+  });
+
+  const totalPages = Math.ceil(getPostdata.count / ITEMS_PER_PAGE);
+
+  res.status(200).json({ posts: getPostdata.rows, totalPages });
 });
+
 
 
 const getCreatePostbyid = async (req, res) => {
@@ -314,34 +327,34 @@ const register = async (req, res) => {
   }
 };
 
-
-
-const login = tryCatch( async (req, res) => {
+const login = tryCatch(async (req, res) => {
   const { email, password } = req.body;
-  console.log("IN LOGIN", email, password)
+  console.log("IN LOGIN", email, password);
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required fields.' });
   }
 
-     const user = await User.findOne({ where: { email } });
+  const user = await User.findOne({ where: { email } });
 
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
-    }
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid email or password.' });
+  }
+
+  if (user.password !== password) {
+    return res.status(401).json({ error: 'Invalid email or password.' });
+  }
+
+  const { name, Role } = user;
+
+  return res.status(200).json({ message: 'success', Role: user.Role, Role, name, email: user.email });
+});
 
 
-    if (user.password !== password) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
-    }
-
-
-    return res.status(200).json({ message: 'success', Role: user.Role });
- });
- 
 
 const guestlogin = async (req, res) => {
   try {
+
     console.log("guest login")
     const guestUser = await User.findOne({ where: { name: 'guest' } });
 
@@ -361,6 +374,48 @@ const guestlogin = async (req, res) => {
   }
 };
 
+const verifyUser = async (req, res) => {
+  const { userId, oldPassword } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (user.password !== oldPassword) {
+      return res.status(401).json({ error: 'Invalid old password' });
+    }
+
+    return res.status(200).json({ message: 'User verified' });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  const { userId, updatedData } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    await user.update(updatedData);
+
+    return res.status(200).json({ message: 'Profile updated successfully' });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
 
 module.exports = {
   register,
@@ -368,10 +423,14 @@ module.exports = {
   Logindata,
   guestlogin,
   responseFacebook,
+  saveUserData,
   CreatePost,
   getCreatePost,
   getPostbylocation,
   getCreatePostbyid,
   aprooveData,
+  rejectData,
   getDatabyid,
+  verifyUser,
+  updateProfile
 };

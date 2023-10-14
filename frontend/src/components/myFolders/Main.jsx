@@ -6,12 +6,12 @@ const Main = () => {
 
   const responseGoogle = (response) => {
     console.log(response);
-    // Perform login logic with response
+    
     setLoggedIn(true);
   };
 
   const handleLogout = () => {
-    // Perform logout logic
+    
     setLoggedIn(false);
     googleLogout();
 
@@ -49,52 +49,55 @@ export default Main;
 
 
 
+// import React, { useState } from 'react';
+// import { GoogleLogin } from '@react-oauth/google';
+// import { Api_url } from '../../constant';
 
+// const Main = () => {
+//   const [loggedIn, setLoggedIn] = useState(false);
+  
+//   const responseGoogle = async (response) => {
+//     console.log(response);
 
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// // import GoogleLogin from 'react-google-login';
-// // or
-// import { GoogleLogin } from 'react-google-login';
+//     const { credential, name, clientId } = response;
 
-// const responseGoogle = (response) => {
-//   console.log(response);
-// }
+//     try {
+//       const saveUserDataResponse = await fetch('/api/saveUserData', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//           credential,
+//           name,
+//           clientId,
+//         }),
+//       });
 
-// ReactDOM.render(
-//   <GoogleLogin
-//     clientId="148618350247-ub8i9r8hniknbearhb69shomlfic5ig5.apps.googleusercontent.com"
-//     render={renderProps => (
-//       <button onClick={renderProps.onClick} disabled={renderProps.disabled}>This is my custom Google button</button>
-//     )}
-//     buttonText="Login"
-//     onSuccess={responseGoogle}
-//     onFailure={responseGoogle}
-//     cookiePolicy={'single_host_origin'}
-//   />,
-//   document.getElementById('googleButton')
-// );
+//       if (saveUserDataResponse.ok) {
+//         console.log('User data saved successfully');
+//       } else {
+//         console.error('Error saving user data');
+//       }
 
+//       setLoggedIn(true);
+//     } catch (error) {
+//       console.error('Error:', error);
+//     }
+//   };
 
+//   return (
+//     <div>
+//       <div style={{ justifyContent: "center", marginLeft: "21%", marginTop: "10px", marginBottom: "17px", backgroundcolor: "#df4930", color: "white" }}>
+//         <GoogleLogin
+//           clientId="930455171490-65or5r8589s8fes6gjf1u0es9ogdsbo6.apps.googleusercontent.com"
+//           onSuccess={responseGoogle}
+//           onError={() => console.log('Login Failed')}
+//         />
+//       </div>
+     
+//     </div>
+//   );
+// };
 
-// import React from 'react';
-// import { createRoot } from 'react-dom/client';
-// import { Auth0Provider } from '@auth0/auth0-react';
-// import App from './App';
-
-// const root = createRoot(document.getElementById('root'));
-
-// root.render(
-// <Auth0Provider
-//        domain="dev-hav1h8rqrg2dq3y4.us.auth0.com"
-//        clientId="vcNa399yEtIqSHXNBVDe3tLaEBwNyiCk"
-//     authorizationParams={{
-//       redirect_uri: window.location.origin
-//     }}
-//   >
-//     <AppProvider>
-//     <App />
-//     </AppProvider>  
-//   </Auth0Provider>,
-// );
-
+// export default Main;
