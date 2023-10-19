@@ -212,7 +212,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import SeeMore from "../../myFolders/Page/SeeMore/SeeMore";
 import Profile from "../../myFolders/Page/UserLogin/Profile";
-
+import ApprovePage from "../Page/AdminLogin/ApprovePage";
+import RejectPage from "../Page/AdminLogin/RejectPage";
 import ManagePosts from "../../myFolders/Page/ManagePost/ManagePost";
 
 import AdminTable from "../../myFolders/Page/AdminLogin/AdminTable";
@@ -386,7 +387,18 @@ function Navbar() {
             path="/AdminDashboard"
             element={<AdminDashboard />}
           />
+           
+           <Route
+            exact
+            path="/ApprovePage"
+            element={<ApprovePage />}
+          />
 
+        <Route
+            exact
+            path="/RejectPage"
+            element={<RejectPage />}
+          />
 
           <Route exact path="/" component={<AdminDashboard />} />
           <Route path="/SeeMore/:id" element={<SeeMore />} />

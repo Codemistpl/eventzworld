@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Api_url } from "../../../../constant";
 import "./AdminTable.css"
-// import { useNavigate } from "react";
+import { useNavigate } from "react-router-dom";
 // import AdminDashboard from '../../Page/AdmunDashboard/AdminDashboard';
 
 const Card = ({ item }) => {
   return (
     <div className="card">
-    
+
       {
         <div className="text-holder">
           <h3>{item.name}</h3>
@@ -35,7 +35,7 @@ const AdminTable = () => {
   const [aprooveId, setaprooveid] = useState();
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const [totalPages, setTotalPages] = useState(1);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const toggleSelectAll = () => {
     setSelectAll((prevSelectAll) => !prevSelectAll);
@@ -83,21 +83,22 @@ const AdminTable = () => {
   const approveData = async (event) => {
     event.preventDefault();
     console.log("Form submitted", items);
-  
+
     try {
       let selectedItems = items.filter((item) => item.selected);
-  
+
       const response = await fetch(`${Api_url}/create_post/aprooveData`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ selectedItems }),
+        // body: JSON.stringify({ selectedItems }),
+        body: JSON.stringify({ selectedItems, isApproved: true }),
+
       });
-  
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-  
-      // Assuming the API call was successful, update the 'approved' property of selected items
+
       setItems((prevItems) =>
         prevItems.map((item) => {
           if (selectedItems.some((selectedItem) => selectedItem.id === item.id)) {
@@ -106,15 +107,38 @@ const AdminTable = () => {
           return item;
         })
       );
-      
+      navigate("/ApprovePage")
     } catch (error) {
       console.error("Error occurred during approval:", error.message);
-      
+
       // window.alert("An error occurred during approval");
     }
   }
-  
-  
+
+
+  const rejectData = async () => {
+    try {
+      const selectedItems = items.filter((item) => item.selected);
+      const response = await fetch(`${Api_url}/create_post/rejectData`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ selectedItems }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      setItems((prevItems) =>
+        prevItems.filter((item) => !selectedItems.some((selectedItem) => selectedItem.id === item.id))
+      );
+      navigate("/RejectPage")
+    } catch (error) {
+      console.error("Error occurred during rejection:", error.message);
+      
+    }
+  };
+
 
 
   const fetchData = async (page) => {
@@ -139,7 +163,7 @@ const AdminTable = () => {
 
 
   // useEffect(()=>{
-    
+
   //   const  isLoggedIn = localStorage.getItem("isLoggedIn")
   //   if(! isLoggedIn) 
   //   {navigate("login")}
@@ -152,8 +176,8 @@ const AdminTable = () => {
     setaprooveid(id)
 
   }
-  
-  
+
+
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
@@ -183,11 +207,11 @@ const AdminTable = () => {
 
   return (
     <>
-    <div className="container-fluid" style={{ overflow: "auto" }}>
-      <div className="row justify-content-center">
-        <div className="col-10">
-          <table className="table table-bordered mt-5"> 
-            <thead className="thead-dark">
+      <div className="container-fluid" style={{ overflow: "auto" }}>
+        <div className="row justify-content-center">
+          <div className="col-10">
+            <table className="table table-bordered mt-5">
+              <thead className="thead-dark">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">name</th>
@@ -212,7 +236,7 @@ const AdminTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {items?items.map((item, index) => (
+                {items ? items.map((item, index) => (
                   <tr>
                     <th scope="row">{index + 1}</th>
                     <td>{item.name}</td>
@@ -237,7 +261,7 @@ const AdminTable = () => {
                       )}
                     </td>
                   </tr>
-                )):null}
+                )) : null}
 
               </tbody>
             </table>
@@ -245,9 +269,9 @@ const AdminTable = () => {
         </div>
       </div>
       <td>
-    
+
       </td>
-   
+
 
       <div className="pagination">
         {renderPagination()}
@@ -255,16 +279,38 @@ const AdminTable = () => {
 
       <td>
 
-        
-        <button onClick={approveData} className="" style={{marginTop:"20px",
-         backgroundColor:"#1a73e8",
-         color:"white",
-         fontSize:"16px",
-         fontFamily:"bold",
-         alignItems:"center",
-         textAlign:"center",
-         justifyContent:"center"
-         }}>Approve</button> 
+
+        <button onClick={approveData} className="approve-button" style={{
+          marginTop: "25px",
+          backgroundColor: "#1a73e8",
+          color: "white",
+          fontSize: "20px",
+          fontFamily: "bold",
+          alignItems: "center",
+          textAlign: "center",
+          justifyContent: "center",
+          width: "40%",
+          padding: "8px",
+          marginLeft: "30px",
+          border: "none"
+        }}>Approve</button>
+
+        <button onClick={rejectData} className="reject-button" style={{
+          marginTop: "10px",
+          backgroundColor: "red",
+          color: "white",
+          fontSize: "20px",
+          fontFamily: "bold",
+          width: "30%",
+          padding: "8px",
+          marginLeft: "30px",
+          border: "none"
+        }}>
+          Reject
+        </button>
+
+
+
       </td>
 
     </>

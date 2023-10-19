@@ -18,12 +18,26 @@
 }
 
 .pagination button {
-  font-size: 14px;
+  font-size: 20px;
   /* padding: 5px 10px; */
   margin: 0 5px;
+  width: 30px;
+  background-color: #dee2e6;
+  border: none;
 }
 
 .pagination span {
-  font-size: 14px;
+  font-size: 20px;
   margin: 0 5px;
 }
+
+
+
+.approve-button:hover {
+  background-color: green; /* Change to green when hovered */
+}
+
+.reject-button:hover {
+  background-color: green; /* Change to green when hovered */
+}
+

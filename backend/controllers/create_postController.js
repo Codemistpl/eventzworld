@@ -145,6 +145,27 @@ const aprooveData = async (req, res) => {
   }
 };
 
+const getApprovedData = tryCatch(async (req, res) => {
+  try {
+    const page = req.query.page || 1; 
+    const offset = (page - 1) * ITEMS_PER_PAGE;
+
+    const approvedData = await create_post.findAndCountAll({
+      where: { status: 1 },
+      order: [['id', 'DESC'], ['name', 'ASC']],
+      limit: ITEMS_PER_PAGE,
+      offset: offset
+    });
+
+    const totalPages = Math.ceil(approvedData.count / ITEMS_PER_PAGE);
+
+    res.status(200).json({ approvedData: approvedData.rows, totalPages });
+  } catch (error) {
+    console.error("Error fetching approved data:", error);
+    res.status(500).json({ message: "Error fetching approved data" });
+  }
+});
+
 
 const rejectData = async (req, res) => {
   const rejectedItems = req.body.selectedItems;
@@ -152,7 +173,7 @@ const rejectData = async (req, res) => {
   try {
     for (const item of rejectedItems) {
       await create_post.update(
-        { status: "2" }, // Assuming '2' represents rejected status
+        { status: "2" }, 
         {
           where: {
             id: item.id,
@@ -167,6 +188,25 @@ const rejectData = async (req, res) => {
     res.status(500).json({ message: "Error rejecting items" });
   }
 };
+
+
+const getRejectedData = tryCatch(async (req, res) => {
+  try {
+    const rejectedData = await create_post.findAll({
+      where: { status: 2 }, 
+      
+      order: [
+        ['id', 'DESC'],
+        ['name', 'ASC'],
+      ],
+    });
+
+    res.status(200).json(rejectedData);
+  } catch (error) {
+    console.error("Error fetching rejected data:", error);
+    res.status(500).json({ message: "Error fetching rejected data" });
+  }
+});
 
 
 
@@ -262,10 +302,10 @@ const getPostbylocation = async (req, res) => {
 
 
 
-const ITEMS_PER_PAGE = 10; // Define the number of items per page
+const ITEMS_PER_PAGE = 10; 
 
 const getCreatePost = tryCatch(async (req, res) => {
-  const page = req.query.page || 1; // Get the page number from the request query
+  const page = req.query.page || 1; 
   
   const offset = (page - 1) * ITEMS_PER_PAGE;
 
@@ -286,8 +326,8 @@ const getCreatePostbyid = async (req, res) => {
   const id = req.params.id;
   const getPostdata = await create_post.findAll({
     where: { id: id },
-  }); // retrieve data from the database
-  res.status(200).json(getPostdata); // send the retrieved data in the response
+  }); 
+  res.status(200).json(getPostdata); 
 };
 
 
@@ -423,6 +463,8 @@ module.exports = {
   Logindata,
   guestlogin,
   responseFacebook,
+  getApprovedData,
+  getRejectedData,
   saveUserData,
   CreatePost,
   getCreatePost,

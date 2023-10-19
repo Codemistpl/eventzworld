@@ -14,7 +14,9 @@ const {
   saveUserData,
   rejectData,
   verifyUser,
-  updateProfile
+  updateProfile,
+  getApprovedData,
+  getRejectedData
 } = require("../controllers/create_postController");
 const { upload } = require("../utils/util");
 const router = express.Router();
@@ -31,6 +33,8 @@ router.get('/getCreatePostbyid/:id', getCreatePostbyid);
 router.post('/aprooveData', aprooveData)
 router.post('/rejectData', rejectData)
 router.get('/getDatabyid', getDatabyid)
+router.get('/getApprovedData', getApprovedData)
+router.get('/getRejectedData', getRejectedData)
 router.post('/verifyUser', verifyUser);
 router.post('/updateProfile', updateProfile);
 

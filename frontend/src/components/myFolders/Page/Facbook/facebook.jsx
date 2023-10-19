@@ -94,9 +94,11 @@
 import {LoginSocialFacebook} from "reactjs-social-login";
 import  { FacebookLoginButton} from "react-social-login-buttons";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Facebook (){
   const [profile , setProfile] = useState(null);
+  const navigate = useNavigate();
 
 return (
   <div>
@@ -104,7 +106,7 @@ return (
      appId="310387418131287"
      onResolve={(response)=>{
       console.log(response);
-      
+       navigate("/Viewpage");
       setProfile(response.data);
       
      }}

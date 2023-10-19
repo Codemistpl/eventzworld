@@ -1,184 +1,83 @@
-import React, { useState } from 'react';
-import { Api_url } from '../../../../constant';
-import Search from '../../Google Search/Search';
-import './Profile.css';
+import React from 'react';
+// import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Profile = () => {
-  const [formData, setFormData] = useState({
-    oldPassword: '', // Added oldPassword field
-    name: '',
-    email: '',
-    newPassword: '',
-    confirmNewPassword: '',
-    profilePicture: null,
-  });
 
-  // const [isEditing, setIsEditing] = useState(false);
-  const [updateMessage, setUpdateMessage] = useState('');
-
-  const handleLocationChange = (place) => {
-    const lat = place.geometry.location.lat();
-    const lng = place.geometry.location.lng();
-  } 
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      profilePicture: file,
-    });
-  };
-
-  // const handleEditClick = () => {
-  //   setIsEditing(!isEditing);
-  //   setUpdateMessage(''); // Clear update message on edit click
-  // };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (formData.newPassword !== formData.confirmNewPassword) {
-      setUpdateMessage('Passwords do not match.');
-      return;
-    }
-
-    try {
-      const verifyResponse = await fetch(`${Api_url}/create_post/verifyUser`, {
-        method: 'POST',
-        body: JSON.stringify({
-          userId: 'userIdHere',
-          oldPassword: formData.oldPassword,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+function Profile() {
   
-      const verifyData = await verifyResponse.json();
-  
-      if (verifyData.error) {
-        setUpdateMessage(verifyData.error);
-        return;
-      }
-  
-      // User is verified, proceed with the update
-      if (formData.newPassword !== formData.confirmNewPassword) {
-        setUpdateMessage('Passwords do not match.');
-        return;
-      }
-  
-      const updateResponse = await fetch(`${Api_url}/create_post/updateProfile`, {
-        method: 'POST',
-        body: JSON.stringify({
-          userId: 'userIdHere',
-          updatedData: formData,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      const updateData = await updateResponse.json();
-  
-      if (updateData.message) {
-        setUpdateMessage('Profile updated successfully.');
-      } else {
-        setUpdateMessage('Error updating profile.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  return (
-    <>
-      <h2>Edit Profile</h2>
-      <div className="pro-container">
-
-        <form onSubmit={handleSubmit}>
+	return (
+		<div>
+			<div class="container bootstrap snippets bootdey">
+    <h1 class="text-primary">Edit Profile</h1>
+      <hr/>
+	<div class="row">
+      
+      <div class="col-md-3">
+        <div class="text-center">
+          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail" alt="avatar"/>
+          <h6>Upload a different photo...</h6>
           
-          <div className="pro-form-group">
-            <label className='profile'>Name</label>
-            <input
-              type="text"
-              name="name"
-              className='pro-input'
-              value={formData.name}
-              onChange={handleInputChange}
-              // disabled={!isEditing}
-            />
-          </div>
-          <div className="pro-form-group">
-            <label className='profile'>Email</label>
-            <input
-              type="email"
-              name="email"
-              className='pro-input'
-              value={formData.email}
-              onChange={handleInputChange}
-              // disabled={!isEditing}
-            />
-          </div>
-         
-          <div className="pro-form-group">
-            <label className='profile'> Password</label>
-            <input
-              type="password"
-              name="Password"
-              className='pro-input'
-              value={formData.newPassword}
-              onChange={handleInputChange}
-              // disabled={!isEditing}
-            />
-          </div>
-          <div className="pro-form-group">
-            <label className='profile'>Confirm New Password</label>
-            <input
-              type="password"
-              name="confirmNewPassword"
-              className='pro-input'
-              value={formData.confirmNewPassword}
-              onChange={handleInputChange}
-              // disabled={!isEditing}
-            />
-          </div>
-            <div className="pro-form-group">
-            <label className='profile'>Location</label>
-          <Search
-           className='pro-input'
-            onLocationChange={handleLocationChange}
-          />
-            </div>
-
-          <div className="pro-form-group">
-            <label className='profile'>Profile Picture</label>
-            <input
-             className='pro-input'
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              // disabled={!isEditing}
-            />
-          </div>
-          <button type="submit"  className="edit-btn">
-            Update
-          </button>
-          {/* <button onClick={handleEditClick} className={`edit-btn ${isEditing ? 'disabled' : ''}`}>
-            {isEditing ? 'Cancel Edit' : 'Edit Profile'}
-          </button> */}
-        </form>
-        {updateMessage && <div className="message">{updateMessage}</div>}
+          <input type="file" class="form-control"/>
+        </div>
       </div>
-    </>
-  );
-};
-
+      
+      
+      <div class="col-md-9 personal-info">
+        <div class="alert alert-info alert-dismissable">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+          This is an <strong>.alert</strong>. Use this to show important messages to the user.
+        </div>
+        <h3>Personal info</h3>
+        
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label class="col-lg-3 control-label">First name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="dey-dey"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Last name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="bootdey"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Company:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value=""/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Email:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="janesemail@gmail.com"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Time Zone:</label>
+            <div class="col-lg-8">
+              <div class="ui-select">
+                <select id="user_time_zone" class="form-control">
+                  <option value="Hawaii">(GMT-10:00) Hawaii</option>
+                  <option value="Alaska">(GMT-09:00) Alaska</option>
+                  <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                  <option value="Arizona">(GMT-07:00) Arizona</option>
+                  <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                  <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                  <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                  <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+  </div>
+</div>
+<hr/>
+		</div>
+	);
+}
 export default Profile;
