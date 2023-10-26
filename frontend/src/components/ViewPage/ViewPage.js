@@ -15,7 +15,7 @@ const Card = ({ item }) => {
         <p>Venue: {item.eventVenue}</p>
         <p>Time: {item.eventTime}</p>
         <p>Date: {item.eventDate}</p>
-        <Link to={`/SeeMore/${item.id}`}>
+        <Link to={`/seemore/${item.id}`}>
           <p className="text-holder button" style={{fontSize:"18px", fontWeight:"400", color:"blue"}}>See More</p>
         </Link>
       </div>

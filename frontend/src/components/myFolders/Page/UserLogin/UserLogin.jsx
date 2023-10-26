@@ -84,15 +84,6 @@ const LoginForm = () => {
       const data = await res.json();
       console.log('Role:', data.Role);
   
-      // if (data.Role === 1) {
-      //   localStorage.setItem("isLoggedIn", true);
-      //   localStorage.setItem("Role", 1);
-      //   window.location.href = "/AdminTable"; 
-      // } else if (data.Role === 0) {
-      //   localStorage.setItem("isLoggedIn", true);
-      //   localStorage.setItem("Role", 0);
-      //   window.location.href = "/ViewPage"; 
-      // }
       
       
       if (data.Role === 1 || data.Role === 0) {
@@ -100,11 +91,12 @@ const LoginForm = () => {
         localStorage.setItem("Role", data.Role);
         localStorage.setItem("userName", data.name);
         localStorage.setItem("userEmail", data.email);
-        // Set the user's name in the state
+        localStorage.setItem("token", data.token);
+        
         setUserName(data.name);
         setUserEmail(data.email);
-       
-        window.location.href = data.Role === 1 ? "/AdminTable" : "/ViewPage";
+        
+        window.location.href = data.Role === 1 ? "/admin-table" : "/view-page";
 
       }
       
@@ -165,6 +157,7 @@ const LoginForm = () => {
                   <Link to="#" onClick={handleAdminLogin}><strong>Admin Login</strong></Link>
 
                 </p> */}
+                
               </div>
             </div>
          

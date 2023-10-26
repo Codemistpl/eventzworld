@@ -41,3 +41,97 @@
   background-color: green; /* Change to green when hovered */
 }
 
+/* Add this CSS to your AdminTable.css file */
+.approve-button,
+.reject-button {
+  display: block;
+  margin: 0 auto; /* This centers the buttons */
+}
+
+/* Add hover effect for buttons */
+.approve-button:hover {
+  background-color: #0e5d9a; /* Change to desired color on hover */
+}
+
+.reject-button:hover {
+  background-color: #ad0000; /* Change to desired color on hover */
+}
+
+/* Add responsive styles for the container */
+.container-fluid {
+  max-width: 1200px; /* Adjust the maximum width as per your design */
+  margin: 0 auto; /* Center the container */
+  padding: 0 15px; /* Add some padding for better mobile view */
+}
+
+/* Add styles for the pagination */
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  font-size: 16px;
+  padding: 5px 10px;
+}
+
+.pagination span {
+  margin: 0 5px;
+  font-size: 16px;
+}
+
+/* Adjust table styles for better responsiveness */
+.table {
+  font-size: 16px;
+  margin-bottom: 0; /* Remove extra margin at the bottom */
+}
+
+.table th,
+.table td {
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Add some spacing between elements */
+.mt-5 {
+  margin-top: 1.25rem; /* Adjust as needed */
+}
+
+/* Optional: Add hover effect for table rows */
+.table tbody tr:hover {
+  background-color: #f0f0f0; /* Change to desired hover color */
+}
+
+/* Add this CSS to your AdminTable.css file */
+
+/* ... (your existing CSS code) ... */
+
+.approve-button,
+.reject-button {
+  display: block;
+  margin: 10px auto; /* Added margin for spacing between buttons */
+  background-color: #1a73e8; /* Added background color for "Approve" button */
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  width: 15%;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.reject-button {
+  background-color: red; /* Added background color for "Reject" button */
+}
+
+.approve-button:hover {
+  background-color: #0e5d9a;
+}
+
+.reject-button:hover {
+  background-color: #ad0000;
+}
+
+/* ... (rest of your CSS code) ... */
+
+

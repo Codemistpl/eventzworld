@@ -106,7 +106,7 @@ return (
      appId="310387418131287"
      onResolve={(response)=>{
       console.log(response);
-       navigate("/Viewpage");
+       navigate("/view-page");
       setProfile(response.data);
       
      }}

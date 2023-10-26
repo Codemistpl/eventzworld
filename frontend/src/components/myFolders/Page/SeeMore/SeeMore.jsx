@@ -14,6 +14,7 @@ const SeeMore = () => {
   const [modalMedia, setModalMedia] = useState(null);
   const [modalIsVideo, setModalIsVideo] = useState(false);
   const [shareMenuOpen, setShareMenuOpen] = useState(false);
+  
   useEffect(() => {
     console.log("Fetching item details for id:", id);
     const fetchData = async () => {

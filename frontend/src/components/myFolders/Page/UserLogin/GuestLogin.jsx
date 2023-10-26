@@ -30,7 +30,7 @@ const LoginForm = () => {
         const data = await res.json();
         console.log(data.message);
         localStorage.setItem("isLoggedIn", true);
-        window.location.href = "/ViewPage"; 
+        window.location.href = "/view-page"; 
       } else {
       
         console.error('Guest login failed');

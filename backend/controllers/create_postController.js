@@ -1,5 +1,5 @@
 const db = require("../models");
-const { createToken, tryCatch } = require("../utils/util");
+const { createToken, tryCatch, verifyToken } = require("../utils/util");
 const { getDistance } = require("../services/services")
 const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
@@ -306,7 +306,11 @@ const ITEMS_PER_PAGE = 10;
 
 const getCreatePost = tryCatch(async (req, res) => {
   const page = req.query.page || 1; 
-  
+  const token = req.query.token
+  console.log(req.query)
+ if (!verifyToken (token)){
+  return res.json({msg: "Invalid token"})
+ }
   const offset = (page - 1) * ITEMS_PER_PAGE;
 
   const getPostdata = await create_post.findAndCountAll({
@@ -342,7 +346,7 @@ const register = async (req, res) => {
   }
 
   try {
-    // Check if the user is already registered based on the email
+    
     const existingUser = await User.findOne({ where: { email } });
 
     if (existingUser) {
@@ -351,7 +355,7 @@ const register = async (req, res) => {
         .json({ error: "User with this email already exists." });
     }
 
-    // Save the user data in the database
+    
     const user = await User.create({ name, email, password });
 
     if (user) {
@@ -386,22 +390,42 @@ const login = tryCatch(async (req, res) => {
   }
 
   const { name, Role } = user;
-
-  return res.status(200).json({ message: 'success', Role: user.Role, Role, name, email: user.email });
+    const token = createToken(user)
+  return res.status(200).json({ message: 'success', Role: user.Role, Role, name, email: user.email, token });
 });
 
 
 
+// const guestlogin = async (req, res) => {
+//   try {
+
+//     console.log("guest login")
+//     const guestUser = await User.findOne({ where: { name: 'guest' } });
+
+//     if (!guestUser) {
+//       return res.status(404).json({ error: "Guest user not found." });
+//     }
+//     console.log(req.body.password)
+//     if (req.body.password === 'guest@123') {
+//       const token = await createToken(guestUser);
+//       return res.json({ message: "Login successful.", token: token, Role: guestUser.role });
+//     } else {
+//       return res.status(401).json({ error: "Invalid password for guest user." });
+//     }
+//   } catch (error) {
+//     console.error("Error during guest login:", error);
+//     res.status(500).json({ error: "An error occurred during guest login." });
+//   }
+// };
+
 const guestlogin = async (req, res) => {
   try {
-
-    console.log("guest login")
     const guestUser = await User.findOne({ where: { name: 'guest' } });
 
     if (!guestUser) {
       return res.status(404).json({ error: "Guest user not found." });
     }
-    console.log(req.body.password)
+
     if (req.body.password === 'guest@123') {
       const token = await createToken(guestUser);
       return res.json({ message: "Login successful.", token: token, Role: guestUser.role });
@@ -413,6 +437,9 @@ const guestlogin = async (req, res) => {
     res.status(500).json({ error: "An error occurred during guest login." });
   }
 };
+
+
+
 
 const verifyUser = async (req, res) => {
   const { userId, oldPassword } = req.body;

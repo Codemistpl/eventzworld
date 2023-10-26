@@ -38,7 +38,7 @@ const RejectPage = () => {
                   <th scope="col">#</th>
                   <th scope="col">name</th>
                   <th scope="col">text</th>
-                  <th scope="col">address</th>
+                  <th scope="col">Address</th>
                   <th scope="col">category</th>
                   <th scope="col">eventDate</th>
                   <th scope="col">eventTime</th>
@@ -51,7 +51,7 @@ const RejectPage = () => {
                     <th scope="row">{index + 1}</th>
                     <td>{item.name}</td>
                     <td>{item.text}</td>
-                    <td>{item.address}</td>
+                    <td>{item.addres}</td>
                     <td>{item.category}</td>
                     <td>{item.eventDate}</td>
                     <td>{item.eventTime}</td>

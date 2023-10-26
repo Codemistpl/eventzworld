@@ -79,7 +79,7 @@ const RegistrationForm = () => {
           if (window.confirm("User successfully registered. Click OK to go to login page.")) {
             navigate("/login");
           }
-        }, 3000); // Delay the redirect after 3 seconds
+        }, 3000);
       } else {
         console.error("Error registering user:", data.error);
       }
@@ -92,7 +92,7 @@ const RegistrationForm = () => {
     <div className="box">
       <div className="registration-container">
         <h1>Create Account</h1>
-        <div style={{color:"red", fontSize:"20px"}}  className="success-message">{successMessage}</div>
+        <div style={{color:"green", fontSize:"20px"}}  className="success-message">{successMessage}</div>
 
         <form onSubmit={handleSubmit}>
           <div>

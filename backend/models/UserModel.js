@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     credential: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     // name: {
     //   type: DataTypes.STRING,
@@ -80,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
     // },
     Client_Id: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     profile_picture :{
       type: DataTypes.STRING

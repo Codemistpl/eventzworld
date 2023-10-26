@@ -37,9 +37,33 @@ const PostBox = () => {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (
+  //     !formData.name ||
+  //     !formData.category ||
+  //     !formData.eventVenue ||
+  //     !formData.text
+  //   ) {
+  //     alert('Please fill in all required fields.');
+  //     return;
+  //   }
+
+  //   if (formSubmitted) {
+  //     alert('Post is already being submitted. Please wait.');
+  //     return;
+  //   }
+
+  //   console.log('Form data submitted:', formData);
+
+  //   setFormSubmitted(true); 
+  //   await CreatePost();
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (
       !formData.name ||
       !formData.category ||
@@ -49,14 +73,22 @@ const PostBox = () => {
       alert('Please fill in all required fields.');
       return;
     }
-
+  
+    if (isSubmitting) {
+      alert('Post is already being submitted. Please wait.');
+      return;
+    }
+  
+    setIsSubmitting(true); 
     console.log('Form data submitted:', formData);
-
+  
     await CreatePost();
   };
 
+
   const [eventDate, setEventDate] = useState(moment().format('YYYY-MM-DD'));
   const [eventTime, setEventTime] = useState(moment().format('HH:mm'));
+  const [formSubmitted, setFormSubmitted] = useState(false); 
   const [image, setimage] = useState(null)
   const [video, setvideo] = useState(null)
   const [audio, setaudio] = useState(null)
@@ -66,6 +98,7 @@ const PostBox = () => {
     audio: '',
     video: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -114,26 +147,52 @@ const PostBox = () => {
       postDataToUpload.append("audio", formData.audio);
     }
 
-    try {
-      const res = await fetch(`${Api_url}/create_post/CreatePost`, {
-        method: "POST",
-        body: postDataToUpload,
-      });
+  //   try {
+  //     const res = await fetch(`${Api_url}/create_post/CreatePost`, {
+  //       method: "POST",
+  //       body: postDataToUpload,
+  //     });
 
-      if (res.ok) {
-        setSuccessMessage('Post Created successfully');
-        setTimeout(() => {
-          setSuccessMessage(null); 
-          window.location.href = '/ViewPage';
-        }, 3000); 
-      } else {
-        console.log('Post submission failed');
-        console.log(await res.text());
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
+  //     if (res.ok) {
+  //       setSuccessMessage('Post Created successfully');
+  //       setTimeout(() => {
+  //         setSuccessMessage(null); 
+  //         window.location.href = '/view-page';
+  //       }, 3000); 
+  //     } else {
+  //       console.log('Post submission failed');
+  //       console.log(await res.text());
+  //     }
+  //   } catch (error) {
+  //     console.error('An error occurred:', error);
+  //   } finally {
+  //     setFormSubmitted(false);
+  //   }
+  // };
+
+  try {
+    const res = await fetch(`${Api_url}/create_post/CreatePost`, {
+      method: "POST",
+      body: postDataToUpload,
+    });
+
+    if (res.ok) {
+      setSuccessMessage('Post Created successfully');
+      setTimeout(() => {
+        setSuccessMessage(null);
+        window.location.href = '/view-page';
+      }, 1000);
+    } else {
+      console.log('Post submission failed');
+      console.log(await res.text());
     }
-  };
+  } catch (error) {
+    console.error('An error occurred:', error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
 
   const handleImageUpload = (e) => {
@@ -302,11 +361,16 @@ const PostBox = () => {
               className="post-row text"
             ></textarea>
 
-            <button type="submit" className="post-submit-button">
+            {/* <button type="submit" className="post-submit-button">
               Post
-            </button>
+            </button> */}
+
+<button type="submit" className="post-submit-button" disabled={isSubmitting}>
+  Post
+</button>
+
             {successMessage && (
-            <div style={{color:"red", fontSize:"20px"}} className="success-message">
+            <div style={{color:"green", fontSize:"20px"}} className="success-message">
               {successMessage}
             </div>
           )}

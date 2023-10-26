@@ -4,6 +4,7 @@ const bycrypt = require("bcrypt");
 const { check } = require("express-validator");
 const multer = require("multer");
 const { diskStorage } = require("multer");
+
 const winston = require('winston');
 
 const logger = winston.createLogger({
@@ -20,6 +21,17 @@ const createToken = (user) => {
 	});
 	return token;
 };
+const verifyToken = (token) =>{
+	var decoded = jwt.verify(token, config.JWT_SECRET);
+	// console.log(decoded.foo) 
+  if (decoded){
+	return true
+  }
+  else{
+	return false
+  }
+}
+
 
 const verifyPassword = async (userpass, password) => {
 	let match = await bycrypt.compare(password, userpass);
@@ -124,5 +136,6 @@ module.exports = {
 	createHash,
 	upload,
 	tryCatch,
+	verifyToken,
 	logger
 };

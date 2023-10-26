@@ -107,7 +107,7 @@ const AdminTable = () => {
           return item;
         })
       );
-      navigate("/ApprovePage")
+      navigate("/approve-page")
     } catch (error) {
       console.error("Error occurred during approval:", error.message);
 
@@ -132,18 +132,18 @@ const AdminTable = () => {
       setItems((prevItems) =>
         prevItems.filter((item) => !selectedItems.some((selectedItem) => selectedItem.id === item.id))
       );
-      navigate("/RejectPage")
+      navigate("/reject-page")
     } catch (error) {
       console.error("Error occurred during rejection:", error.message);
-      
+
     }
   };
 
 
 
-  const fetchData = async (page) => {
+  const fetchData = async (page, token) => {
     try {
-      const response = await fetch(`${Api_url}/create_post/getCreatePost?page=${page}`);
+      const response = await fetch(`${Api_url}/create_post/getCreatePost?page=${page}&token=${token}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -157,20 +157,21 @@ const AdminTable = () => {
   };
 
   useEffect(() => {
-    fetchData(currentPage);
+    const token = localStorage.getItem("token")
+    fetchData(currentPage, token);
   }, [currentPage]);
 
 
 
-  // useEffect(()=>{
+  useEffect(() => {
 
-  //   const  isLoggedIn = localStorage.getItem("isLoggedIn")
-  //   if(! isLoggedIn) 
-  //   {navigate("login")}
-  //   else{
-  //     console.log("log out")
-  //   }
-  //    })
+    const Role = localStorage.getItem("Role")
+
+    if (Role == 0) { navigate("/") }
+    else {
+      console.log("log out")
+    }
+  })
 
   const handleEdit = (id) => {
     setaprooveid(id)
@@ -207,7 +208,20 @@ const AdminTable = () => {
 
   return (
     <>
+      
       <div className="container-fluid" style={{ overflow: "auto" }}>
+      <h2 style={{marginTop:"20px"}}>AdminTable</h2>
+        <button onClick={approveData} className="approve-button" style={{
+
+        }}>Approve</button>
+
+        <button onClick={rejectData} className="reject-button" style={{
+        
+        }}>
+          Reject
+        </button>
+
+
         <div className="row justify-content-center">
           <div className="col-10">
             <table className="table table-bordered mt-5">
@@ -278,39 +292,6 @@ const AdminTable = () => {
       </div>
 
       <td>
-
-
-        <button onClick={approveData} className="approve-button" style={{
-          marginTop: "25px",
-          backgroundColor: "#1a73e8",
-          color: "white",
-          fontSize: "20px",
-          fontFamily: "bold",
-          alignItems: "center",
-          textAlign: "center",
-          justifyContent: "center",
-          width: "40%",
-          padding: "8px",
-          marginLeft: "30px",
-          border: "none"
-        }}>Approve</button>
-
-        <button onClick={rejectData} className="reject-button" style={{
-          marginTop: "10px",
-          backgroundColor: "red",
-          color: "white",
-          fontSize: "20px",
-          fontFamily: "bold",
-          width: "30%",
-          padding: "8px",
-          marginLeft: "30px",
-          border: "none"
-        }}>
-          Reject
-        </button>
-
-
-
       </td>
 
     </>
