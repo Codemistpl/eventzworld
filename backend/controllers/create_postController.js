@@ -428,7 +428,7 @@ const guestlogin = async (req, res) => {
 
     if (req.body.password === 'guest@123') {
       const token = await createToken(guestUser);
-      return res.json({ message: "Login successful.", token: token, Role: guestUser.role });
+      return res.json({ message: "Login successful.", token: token });
     } else {
       return res.status(401).json({ error: "Invalid password for guest user." });
     }

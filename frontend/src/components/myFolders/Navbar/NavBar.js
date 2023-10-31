@@ -229,7 +229,7 @@ function Navbar() {
 
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
-  
+
 
   const handleClick = () => {
     setClick(!click);
@@ -240,10 +240,19 @@ function Navbar() {
     if (isLoggedIn) {
       setAuthenticated(true);
       setUsername(localStorage.getItem("userName") || "Guest");
+      const Role = localStorage.getItem("Role");
+      if (Role === "1") {
+        setIsAdminLoggedIn(true);
+      } else {
+        setIsAdminLoggedIn(false);
+      }
+    } else {
+      setIsAdminLoggedIn(false);
     }
   };
 
-    useEffect(() => {
+
+  useEffect(() => {
     const Role = localStorage.getItem("Role");
     if (Role === "1") {
       setIsAdminLoggedIn(true);
@@ -299,23 +308,22 @@ function Navbar() {
                   </NavLink>
                 </li>
               ) : null}
-                       
- 
- 
-                          {isAdminLoggedIn && authenticated && (
-            <li className="nav-item">
-              <NavLink
-                exact
-                to="/admin-table"
-                activeClassName="active"
-                className="nav-links"
-                onClick={handleClick}
-              >
-                Admin Table
-              </NavLink>
-            </li>
-          )}
 
+
+
+              {isAdminLoggedIn && authenticated && (
+                <li className="nav-item">
+                  <NavLink
+                    exact
+                    to="/admin-table"
+                    activeClassName="active"
+                    className="nav-links"
+                    onClick={handleClick}
+                  >
+                    Admin Table
+                  </NavLink>
+                </li>
+              )}
 
               <li className="nav-item">
                 {authenticated && (
@@ -330,10 +338,10 @@ function Navbar() {
 
                     {showDropdown && (
                       <div className="dropdown-content">
-                      <NavLink exact to="/profile"
-                       activeClassName="active"
-                       className="nav-links"
-                       onClick={handleClick}>
+                        <NavLink exact to="/profile"
+                          activeClassName="active"
+                          className="nav-links"
+                          onClick={handleClick}>
                           Profile
                         </NavLink>
 
@@ -345,6 +353,7 @@ function Navbar() {
                             localStorage.removeItem("isLoggedIn");
                             localStorage.removeItem("userName");
                             localStorage.removeItem("userEmail");
+                            localStorage.removeItem("Role"); 
                             window.location.href = "/user-login";
                           }}
                         >
@@ -387,7 +396,7 @@ function Navbar() {
           <Route exact path="/view-page" element={authenticated ? <ViewPage /> : <Navigate to="/user-login" />} />
 
           <Route exact path="/posting-box" element={authenticated ? < PostingBox /> : <Navigate to="/user-login" />} />
- 
+
           <Route
             exact
             path="/AdminLogin"
@@ -428,8 +437,20 @@ function Navbar() {
 
 
           {/* <Route exact path="/AdminTable" element={authenticated ?<AdminTable /> :<Navigate to="/UserLogin" />} /> */}
-                    {isAdminLoggedIn && (
-            <Route exact path="/admin-table" element={<AdminTable />} />
+          {isAdminLoggedIn && authenticated && (
+            <Route
+              exact
+              path="/admin-table"
+              element={
+                isAdminLoggedIn &&
+                authenticated &&
+                localStorage.getItem("Role") === "1" ? (
+                  <AdminTable />
+                ) : (
+                  <Navigate to="/view-page" />
+                )
+              }
+            />
           )}
         </Routes>
 

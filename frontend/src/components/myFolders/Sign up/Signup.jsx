@@ -70,15 +70,13 @@ const RegistrationForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, gender, password }),
       });
-
+    
       const data = await response.json();
-
+    
       if (response.ok) {
         setSuccessMessage("User successfully registered.");
         setTimeout(() => {
-          if (window.confirm("User successfully registered. Click OK to go to login page.")) {
-            navigate("/login");
-          }
+          navigate("/login");
         }, 3000);
       } else {
         console.error("Error registering user:", data.error);
@@ -86,6 +84,7 @@ const RegistrationForm = () => {
     } catch (error) {
       console.error("Error registering user:", error);
     }
+    
   };
 
   return (
